@@ -33,3 +33,16 @@ class Homepage extends React.Component {
     );
   }
 }
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#A1CCDD',
+  },
+  h1: {
+    fontSize: 60,
+    textAlign: 'center',
+    color: '#ff8000',
+  },
+});
