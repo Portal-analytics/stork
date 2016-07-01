@@ -19,6 +19,8 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import YANavigator from 'react-native-ya-navigator';
 import StorkCheckIn from './StorkCheckIn';
 import PlaceARequest from './PlaceARequest';
+import MapView from './MapViewz';
+import RequestTabBar from './RequestTabBar';
 import Logo1 from '../logos/logo1.jpg';
 import Logo2 from '../logos/logo2.png';
 import Logo3 from '../logos/logo3.jpg';
@@ -97,6 +99,12 @@ class Homepage extends React.Component {
       drawerOpen: !this.state.drawerOpen
     });
   }
+
+  goToMap() {
+    this.props.navigator.push({
+      component: MapView
+    });
+  }
   _renderSeperator(sectionID: number, rowID: number, adjacentRowHighlighted: bool) {
     return (
       <View
@@ -122,7 +130,7 @@ class Homepage extends React.Component {
   }
   if (item === 'About Us') {
     return (
-      <TouchableHighlight onPress={this.toggleDrawer.bind(this)}><Text style={styles.menuItems}>{item}</Text></TouchableHighlight>
+      <TouchableHighlight onPress={this.goToMap.bind(this)}><Text style={styles.menuItems}>{item}</Text></TouchableHighlight>
       )
   }
   if (item === 'Profile') {
@@ -184,7 +192,7 @@ class Homepage extends React.Component {
   }
 
   static navigationDelegate = {
-    id: 'homePage',
+    id: 'HomePage',
     navBarBackgroundColor: '#A1CCDD',
     renderTitle() {
       return (<View><Text style={styles.title}> Stork </Text></View>)

@@ -58,7 +58,7 @@ _handleChangePage() {
         onChangeText={(password) => this.setState({ password })}
         style={styles.textEntry}
         placeholder = "Password"
-        secureTextEntry = 'true'
+        secureTextEntry ={true}
         />
 
         <View style={styles.submitView}>

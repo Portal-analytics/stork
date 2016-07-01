@@ -12,6 +12,7 @@ import {
 } from 'react-native';
 import Icons from 'react-native-vector-icons';
 import YANavigator from 'react-native-ya-navigator';
+import ConfirmCheckIn from './ConfirmCheckIn';
 
 class StorkCheckIn extends React.Component {
   constructor() {
@@ -31,20 +32,21 @@ class StorkCheckIn extends React.Component {
   submitCheckIn () {
     //Have to do logic to check in user and display it on the map
     let destination = this.state.destination;
-    console.log('checked in');
+    this.props.navigator.push({
+      component: ConfirmCheckIn
+    });
   }
 
   render() {
 
     return (
-      <YANavigator.Scene delegate={this}>
-      <View style={styles.container}>
+      <YANavigator.Scene delegate={this} style={styles.container}>
       <Text style={styles.checkInText}> Check-ins allow you to notify others where you will be so they can submit requests to you before you order</Text>
       <View style={styles.or}>
       <Text style ={styles.checkInText}> Destination </Text>
-      <View style={styles.whiteView}>
+      <View >
       <TextInput
-      style={ { height: 40, borderColor: 'gray', width: 250, flex: 1, marginLeft: 5 } }
+      style={styles.inputText}
       ref = 'destination'
       placeholder= 'Bodos, CVS, Newcomb'
       color = '#000000'
@@ -56,6 +58,7 @@ class StorkCheckIn extends React.Component {
       <View style={styles.statusSwitch}>
       <Text style={styles.checkInText}> On the way </Text>
       <Switch
+      tintColor={'#ff8000'}
       style= {styles.destinationSwitch}
       onValueChange={this.toggleCheckInSwitch.bind(this)}
       value = {this.state.isAtDestination}
@@ -67,7 +70,6 @@ class StorkCheckIn extends React.Component {
       <Text style={styles.buttonText}> Check in! </Text>
       </TouchableHighlight>
       </View>
-       </View>
     </YANavigator.Scene>
     );
   }
@@ -98,14 +100,6 @@ const styles = StyleSheet.create({
   },
   submitView: {
     margin: 20,
-  },
-  whiteView: {
-    backgroundColor: '#ffffff',
-  },
-  or: {
-      fontSize: 20,
-      textAlign: 'center',
-      margin: 20,
   },
   title: {
     fontSize: 32,
@@ -138,6 +132,16 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignSelf: 'center',
   },
+  inputText: {
+    height: 40, 
+    borderColor: 'gray',  
+    flex: 1,
+    paddingLeft: 5,
+    borderRadius: 8, 
+    borderWidth: 1, 
+    backgroundColor: 'white',
+    alignSelf: 'stretch'
+  }
 });
 
 module.exports = StorkCheckIn;

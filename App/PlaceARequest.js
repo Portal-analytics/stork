@@ -11,6 +11,10 @@ import {
   Switch,
   NavigatorIOS,
 } from 'react-native';
+import SearchingForStork from './SearchingForStork';
+import Icon from 'react-native-vector-icons/FontAwesome';
+import YANavigator from 'react-native-ya-navigator';
+import Tabbar, { Tab, RawContent, IconWithBar, glypyMapMaker } from 'react-native-tabbar';
 
 class PlaceARequest extends React.Component {
   constructor() {
@@ -27,6 +31,9 @@ class PlaceARequest extends React.Component {
   onSubmit() {
     let venue = this.state.venue;
     let order = this.state.order;
+    this.props.navigator.push({
+      component: SearchingForStork
+    });
   }
   switchTheWitch () {
     this.setState({
@@ -40,7 +47,10 @@ class PlaceARequest extends React.Component {
     (<TextInput style={styles.displayAltLocation} placeholder='Alternative Location: eg. Rice 120'/>) : null;
 
     return (
-      <View style={styles.container}>
+      <YANavigator.Scene
+        delegate={this}
+        style={styles.container}
+        >
       <View style ={styles.submit}>
       <TextInput
       style={styles.displayAltLocation}
@@ -75,7 +85,7 @@ class PlaceARequest extends React.Component {
       onChangeText={(order) => this.setState({order})}
       value={this.state.order}
       style={ { height: 300, borderColor: 'gray', width: 280, flex: 1, borderRadius: 8, borderWidth: 1, backgroundColor: 'white', paddingLeft: 5, fontSize: 16} }
-      multiline = 'true'
+      multiline = {true}
       placeholder = 'Order'
       />
       </View>
@@ -84,13 +94,16 @@ class PlaceARequest extends React.Component {
       <Text style={styles.buttonText}> Stork it! </Text>
       </TouchableHighlight>
       </View>
-       </View>
+      </YANavigator.Scene>
     );
     }
 
     static navigationDelegate = {
     id: 'PlaceARequest',
     navBarBackgroundColor: 'white',
+    renderTitle() {
+      return (<View><Text style={styles.title}> Place a Request </Text></View>)
+    },
   }
     }
     const styles = StyleSheet.create({
@@ -106,8 +119,14 @@ class PlaceARequest extends React.Component {
       marginTop: 20,
       marginBottom: 20,
     },
-    submit: {
+    title: {
+      fontSize: 20,
+      fontFamily: 'Helvetica',
       textAlign: 'center',
+      color: 'black',
+    },
+    submit: {
+      alignSelf: 'center',
       margin: 10,
     },
     placeARequestSwitch:
