@@ -104,7 +104,11 @@
 			remoteGlobalIDString = 58B5119B1A9E6C1200147676;
 			remoteInfo = RCTText;
 		};
+<<<<<<< Updated upstream
 		EBBF85061D26BE41002C031D /* PBXContainerItemProxy */ = {
+=======
+		EBBF84B31D26B84D002C031D /* PBXContainerItemProxy */ = {
+>>>>>>> Stashed changes
 			isa = PBXContainerItemProxy;
 			containerPortal = 3D28A485E41944AFA3AB1F82 /* AirMaps.xcodeproj */;
 			proxyType = 2;
@@ -319,10 +323,17 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+<<<<<<< Updated upstream
 		EBBF85031D26BE41002C031D /* Products */ = {
 			isa = PBXGroup;
 			children = (
 				EBBF85071D26BE41002C031D /* libAirMaps.a */,
+=======
+		EBBF84B01D26B84D002C031D /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				EBBF84B41D26B84D002C031D /* libAirMaps.a */,
+>>>>>>> Stashed changes
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -394,7 +405,11 @@
 			projectDirPath = "";
 			projectReferences = (
 				{
+<<<<<<< Updated upstream
 					ProductGroup = EBBF85031D26BE41002C031D /* Products */;
+=======
+					ProductGroup = EBBF84B01D26B84D002C031D /* Products */;
+>>>>>>> Stashed changes
 					ProjectRef = 3D28A485E41944AFA3AB1F82 /* AirMaps.xcodeproj */;
 				},
 				{
@@ -517,11 +532,19 @@
 			remoteRef = 832341B41AAA6A8300B99B32 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
+<<<<<<< Updated upstream
 		EBBF85071D26BE41002C031D /* libAirMaps.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
 			path = libAirMaps.a;
 			remoteRef = EBBF85061D26BE41002C031D /* PBXContainerItemProxy */;
+=======
+		EBBF84B41D26B84D002C031D /* libAirMaps.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libAirMaps.a;
+			remoteRef = EBBF84B31D26B84D002C031D /* PBXContainerItemProxy */;
+>>>>>>> Stashed changes
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */
