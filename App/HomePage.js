@@ -86,12 +86,14 @@ class Homepage extends React.Component {
     this.props.navigator.push({
       component: StorkCheckIn,
     });
+    this.toggleDrawer();
   }
 
   pressRequest() {
     this.props.navigator.push({
       component: PlaceARequest
     });
+    this.toggleDrawer();
   }
 
   toggleDrawer() {
@@ -104,6 +106,7 @@ class Homepage extends React.Component {
     this.props.navigator.push({
       component: MapView
     });
+    this.toggleDrawer();
   }
   _renderSeperator(sectionID: number, rowID: number, adjacentRowHighlighted: bool) {
     return (
@@ -192,7 +195,7 @@ class Homepage extends React.Component {
   }
 
   static navigationDelegate = {
-    id: 'HomePage',
+    id: 'homePage',
     navBarBackgroundColor: '#A1CCDD',
     renderTitle() {
       return (<View><Text style={styles.title}> Stork </Text></View>)

@@ -17,9 +17,8 @@ import Checkmark from '../logos/checkmark.png';
 class SearchingForStork extends React.Component {
   
   goToHomePage() {
-    this.props.navigator.push({
-      component: HomePage
-    });
+    this.props.navigator.pop();
+    this.props.navigator.pop();
   }
 
   render() {

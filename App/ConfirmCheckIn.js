@@ -17,9 +17,8 @@ import Logo from '../storklogo.jpg';
 class ConfirmCheckIn extends React.Component {
   
   goToHomePage() {
-    this.props.navigator.push({
-      component: HomePage
-    });
+    this.props.navigator.pop();
+    this.props.navigator.pop();
   }
 
   render() {
