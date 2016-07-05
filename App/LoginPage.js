@@ -15,7 +15,7 @@ import HomePage from './HomePage';
 import Icons from 'react-native-vector-icons';
 import YANavigator from 'react-native-ya-navigator';
 import StorkCheckIn from './StorkCheckIn';
-
+import FBSDK, {LoginButton, AccessToken} from 'react-native-fbsdk';
 
 class LoginPage extends React.Component {
 
@@ -66,8 +66,29 @@ _handleChangePage() {
           <Text style={styles.buttonText}>Submit</Text>
         </TouchableHighlight>
         </View>
-        <Text style={styles.welcome}> Don't have an account? Sign up!</Text>
 
+        <Text style={styles.welcome}> Dont have an account? Sign up!</Text>
+        <View>
+          <LoginButton
+            style={styles.button}
+            publishPermissions={["publish_actions"]}
+            onLoginFinished={
+              (error, result) => {
+                if (error) {
+                  alert("login has error: " + result.error);
+                } else if (result.isCancelled) {
+                  alert("login is cancelled.");
+                } else {
+                  AccessToken.getCurrentAccessToken().then(
+                    (data) => {
+                      alert(data.accessToken.toString())
+                    }
+                  )
+                }
+              }
+            }
+            onLogoutFinished={() => alert("logout.")}/>
+        </View>
       </YANavigator.Scene>
     );
   }
@@ -99,7 +120,7 @@ const styles = StyleSheet.create({
     color: '#333333',
     marginBottom: 5,
   },
-  textEntry: { 
+  textEntry: {
     height: 40,
     borderColor: 'gray',
     borderWidth: 1,
