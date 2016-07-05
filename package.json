@@ -9,6 +9,7 @@
     "react": "15.1.0",
     "react-native": "0.28.0",
     "react-native-drawer": "^2.2.4",
+    "react-native-fbsdk": "^0.2.2",
     "react-native-maps": "^0.6.0",
     "react-native-progress": "^3.0.1",
     "react-native-simple-rating": "^1.0.0",
