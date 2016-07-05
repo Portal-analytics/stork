@@ -67,10 +67,8 @@ _handleChangePage() {
         </TouchableHighlight>
         </View>
 
-        <Text style={styles.welcome}> Dont have an account? Sign up!</Text>
-        <View>
+        <View style={styles.facebookButton}>
           <LoginButton
-            style={styles.button}
             publishPermissions={["publish_actions"]}
             onLoginFinished={
               (error, result) => {
@@ -136,7 +134,7 @@ const styles = StyleSheet.create({
     margin: 20,
   },
   logoImage: {
-    height: 325,
+    height: 300,
     width: 375,
   },
   buttonText: {
@@ -159,6 +157,9 @@ const styles = StyleSheet.create({
   fontSize: 18,
   color: 'white',
   alignSelf: 'center'
+  },
+  facebookButton: {
+    alignSelf: 'center'
   },
 });
 
