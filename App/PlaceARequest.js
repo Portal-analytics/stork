@@ -15,10 +15,13 @@ import SearchingForStork from './SearchingForStork';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import YANavigator from 'react-native-ya-navigator';
 import Tabbar, { Tab, RawContent, IconWithBar, glypyMapMaker } from 'react-native-tabbar';
+import firebase from 'firebase';
+
 
 class PlaceARequest extends React.Component {
   constructor() {
     super();
+    var database = firebase.database();
     this.state = {
       switchIsOn: true,
       altLocationIsVisible: false,
@@ -26,6 +29,11 @@ class PlaceARequest extends React.Component {
       order: '',
       altLocation: '',
     };
+    database.set({
+      venue: 'Chipotle',
+      order: 'Chicken burrito, with pico and cheese'
+    });
+
   }
 
   onSubmit() {
@@ -140,13 +148,13 @@ class PlaceARequest extends React.Component {
       flex: 1
     },
     displayAltLocation: {
-      height: 40, 
-      borderColor: 'gray', 
-      width: 280, 
+      height: 40,
+      borderColor: 'gray',
+      width: 280,
       flex: 1,
       paddingLeft: 5,
-      borderRadius: 8, 
-      borderWidth: 1, 
+      borderRadius: 8,
+      borderWidth: 1,
       backgroundColor: 'white',
     },
     button: {

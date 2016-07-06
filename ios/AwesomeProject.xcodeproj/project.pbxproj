@@ -45,6 +45,7 @@
 		EBBF85201D26CEE6002C031D /* FBSDKCoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EBBF851F1D26CEE6002C031D /* FBSDKCoreKit.framework */; };
 		EBBF85231D26CF76002C031D /* FBSDKLoginKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EBBF85221D26CF76002C031D /* FBSDKLoginKit.framework */; };
 		EBBF85251D26CF80002C031D /* FBSDKShareKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EBBF85241D26CF80002C031D /* FBSDKShareKit.framework */; };
+		EBBF85611D2D5643002C031D /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = EBBF85601D2D5643002C031D /* GoogleService-Info.plist */; };
 		F5F99F906A6F478F90DE903E /* FontAwesome.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1DEF08E292FD4F6EA2C2FBFF /* FontAwesome.ttf */; };
 /* End PBXBuildFile section */
 
@@ -204,6 +205,7 @@
 		EBBF851F1D26CEE6002C031D /* FBSDKCoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKCoreKit.framework; path = AwesomeProject/Frameworks/FBSDKCoreKit.framework; sourceTree = "<group>"; };
 		EBBF85221D26CF76002C031D /* FBSDKLoginKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKLoginKit.framework; path = AwesomeProject/Frameworks/FBSDKLoginKit.framework; sourceTree = "<group>"; };
 		EBBF85241D26CF80002C031D /* FBSDKShareKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKShareKit.framework; path = AwesomeProject/Frameworks/FBSDKShareKit.framework; sourceTree = "<group>"; };
+		EBBF85601D2D5643002C031D /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		F1A115382F474FFCB7E5BC8B /* libRNVectorIcons.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNVectorIcons.a; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -319,6 +321,7 @@
 		13B07FAE1A68108700A75B9A /* AwesomeProject */ = {
 			isa = PBXGroup;
 			children = (
+				EBBF85601D2D5643002C031D /* GoogleService-Info.plist */,
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.m */,
@@ -730,6 +733,7 @@
 				BDD9E0AF1D21BFEC008A9B38 /* Entypo.ttf in Resources */,
 				13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */,
 				E107728E5DBE4093867BB963 /* Entypo.ttf in Resources */,
+				EBBF85611D2D5643002C031D /* GoogleService-Info.plist in Resources */,
 				543BDFE9DDAB4D3A92738146 /* EvilIcons.ttf in Resources */,
 				F5F99F906A6F478F90DE903E /* FontAwesome.ttf in Resources */,
 				40AB014B95D24A229A56393B /* Foundation.ttf in Resources */,

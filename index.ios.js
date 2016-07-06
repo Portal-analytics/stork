@@ -14,16 +14,24 @@ import LoginPage from './App/LoginPage';
 import HomePage from './App/HomePage';
 import Icons from 'react-native-vector-icons';
 import YANavigator from 'react-native-ya-navigator';
+import firebase from 'firebase';
 
 class Stork extends React.Component {
 
-constructor() {
-  super();
+constructor(props) {
+  super(props);
+  firebase.initializeApp({
+    apiKey: "AIzaSyASAkQcB8bk-tXpWbVCP4JPpn4r30oAtb8",
+    authDomain: "stork-bb909.firebaseapp.com",
+    databaseURL: "https://stork-bb909.firebaseio.com",
+    storageBucket: "stork-bb909.appspot.com",
+  });
+
 }
 
   render() {
     return (
-      <YANavigator 
+      <YANavigator
                     itemWrapperStyle={styles.navWrap}
                     style={styles.nav}
                     navBarStyle={{
@@ -38,7 +46,7 @@ constructor() {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1 
+    flex: 1
   },
   welcome: {
     fontSize: 20,
