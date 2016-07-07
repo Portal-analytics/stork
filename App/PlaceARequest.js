@@ -12,6 +12,7 @@ import {
   NavigatorIOS,
 } from 'react-native';
 import SearchingForStork from './SearchingForStork';
+import HomePage from './HomePage';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import YANavigator from 'react-native-ya-navigator';
 import Tabbar, { Tab, RawContent, IconWithBar, glypyMapMaker } from 'react-native-tabbar';
@@ -19,26 +20,29 @@ import firebase from 'firebase';
 
 
 class PlaceARequest extends React.Component {
-  constructor() {
-    super();
-    var database = firebase.database();
+  constructor(props) {
+    super(props);
     this.state = {
       switchIsOn: true,
       altLocationIsVisible: false,
       venue: '',
       order: '',
       altLocation: '',
+      user: firebase.auth().currentUser,
     };
-    database.set({
-      venue: 'Chipotle',
-      order: 'Chicken burrito, with pico and cheese'
-    });
 
   }
 
-  onSubmit() {
+  onSubmit(){
     let venue = this.state.venue;
     let order = this.state.order;
+    var database = firebase.database();
+    var requestsRef = database.ref('requests/')
+    requestsRef.push({
+      venue: this.state.venue,
+      order: this.state.order,
+      uid: this.state.user.uid,
+    });
     this.props.navigator.push({
       component: SearchingForStork
     });

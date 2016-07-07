@@ -27,15 +27,6 @@ class LoginPage extends React.Component {
 
   constructor(props) {
   super(props);
-  firebase.auth().onAuthStateChanged(function(user){
-    if(user) {
-      this.state= {
-        currentUser: true
-    }
-  } else {
-    console.log('the user is ' + user);
-  }
-});
 
   this.state = {
     loaded: true,
@@ -45,9 +36,7 @@ class LoginPage extends React.Component {
   };
 }
 
-
   writeUserData() {
-
 
 
     const {email, password} = this.state
@@ -94,17 +83,19 @@ firebase.auth().signInWithEmailAndPassword(email, password).catch(function(error
       alert('Error signing in ' + error.code);
     }
   }
+
 });
 
-    LayoutAnimation.easeInEaseOut();
-      this.props.navigator.push({
-      component: HomePage,
-      props: {
-        userName: this.state.userName,
-        password: this.state.password,
-      }
+LayoutAnimation.easeInEaseOut();
+  this.props.navigator.push({
+  component: HomePage,
+  props: {
+    email: this.state.email,
+    password: this.state.password,
+  }
 
-    });
+});
+
 
   }
 

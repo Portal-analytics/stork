@@ -21,6 +21,7 @@ import StorkCheckIn from './StorkCheckIn';
 import PlaceARequest from './PlaceARequest';
 import MapView from './MapViewz';
 import RequestTabBar from './RequestTabBar';
+import LoginPage from './LoginPage';
 import Logo1 from '../logos/logo1.jpg';
 import Logo2 from '../logos/logo2.png';
 import Logo3 from '../logos/logo3.jpg';
@@ -31,9 +32,12 @@ import Logo7 from '../logos/logo7.png';
 var days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 
 class Homepage extends React.Component {
-  
+
   constructor(props) {
   super(props);
+
+
+  //console.log('user is ' + this.state.email + ' ' + uid);
   var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
   var deals = [
       {
@@ -73,9 +77,10 @@ class Homepage extends React.Component {
       }
     ];
   this.state = {
-    userName: props.userName,
     password: props.password,
     drawerOpen: false,
+    uid: '',
+    email: '',
     dataSource: ds.cloneWithRows(['Be a Stork', 'Request a Stork', 'About Us', 'Profile']),
     deals: ds.cloneWithRows(deals),
 
@@ -91,7 +96,8 @@ class Homepage extends React.Component {
 
   pressRequest() {
     this.props.navigator.push({
-      component: PlaceARequest
+      component: PlaceARequest,
+
     });
     this.toggleDrawer();
   }
@@ -189,7 +195,7 @@ class Homepage extends React.Component {
           </ListView>
         </ScrollView>
         </Drawer>
-        
+
       </YANavigator.Scene>
     );
   }

@@ -20,6 +20,7 @@ class StorkCheckIn extends React.Component {
     this.state = {
       destination: '',
       isAtDestination: true,
+      user: firebase.auth().currentUser,
     };
   }
 
@@ -30,8 +31,13 @@ class StorkCheckIn extends React.Component {
   }
 
   submitCheckIn () {
-    //Have to do logic to check in user and display it on the map
     let destination = this.state.destination;
+    var database = firebase.database();
+    var checkinsRef = database.ref('checkins/')
+    checkinsRef.push({
+      destination: this.state.destination,
+      uid: this.state.user.uid,
+    });
     this.props.navigator.push({
       component: ConfirmCheckIn
     });
@@ -133,12 +139,12 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
   },
   inputText: {
-    height: 40, 
-    borderColor: 'gray',  
+    height: 40,
+    borderColor: 'gray',
     flex: 1,
     paddingLeft: 5,
-    borderRadius: 8, 
-    borderWidth: 1, 
+    borderRadius: 8,
+    borderWidth: 1,
     backgroundColor: 'white',
     alignSelf: 'stretch'
   }
