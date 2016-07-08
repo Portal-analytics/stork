@@ -31,16 +31,21 @@ class StorkCheckIn extends React.Component {
 
   submitCheckIn () {
     //Have to do logic to check in user and display it on the map
-    let destination = this.state.destination;
-    this.props.navigator.push({
-      component: ConfirmCheckIn
+    //Push info to Firebase
+    let destination = this.state.destination
+    this.setState({
+      destination: '',
+      isAtDestination: true,
     });
+    this.props.goToConfirmCheckIn();
+    
   }
 
   render() {
 
     return (
-      <YANavigator.Scene delegate={this} style={styles.container}>
+      <View style={styles.container}>
+      <Text style={styles.header}> Check-In </Text> 
       <Text style={styles.checkInText}> Check-ins allow you to notify others where you will be so they can submit requests to you before you order</Text>
       <View style={styles.or}>
       <Text style ={styles.checkInText}> Destination </Text>
@@ -70,16 +75,8 @@ class StorkCheckIn extends React.Component {
       <Text style={styles.buttonText}> Check in! </Text>
       </TouchableHighlight>
       </View>
-    </YANavigator.Scene>
+    </View>
     );
-  }
-
-  static navigationDelegate = {
-    id: 'Checkin',
-    navBarBackgroundColor: 'white',
-    renderTitle() {
-      return (<View><Text style={styles.title}> Check-In </Text></View>)
-    },
   }
 
 }
@@ -87,6 +84,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#A1CCDD',
+    alignSelf: 'center',
   },
   checkInText: {
     color: '#ffffff',
@@ -141,6 +139,12 @@ const styles = StyleSheet.create({
     borderWidth: 1, 
     backgroundColor: 'white',
     alignSelf: 'stretch'
+  },
+  header: {
+    fontSize: 24,
+    fontFamily: 'Helvetica',
+    alignSelf: 'center',
+    marginTop: 5,
   }
 });
 

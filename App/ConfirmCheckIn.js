@@ -18,7 +18,6 @@ class ConfirmCheckIn extends React.Component {
   
   goToHomePage() {
     this.props.navigator.pop();
-    this.props.navigator.pop();
   }
 
   render() {

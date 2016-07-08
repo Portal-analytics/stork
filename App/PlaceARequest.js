@@ -9,16 +9,16 @@ import {
   Image,
   TextInput,
   Switch,
-  NavigatorIOS,
 } from 'react-native';
 import SearchingForStork from './SearchingForStork';
+import HomePage from './HomePage';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import YANavigator from 'react-native-ya-navigator';
 import Tabbar, { Tab, RawContent, IconWithBar, glypyMapMaker } from 'react-native-tabbar';
 
 class PlaceARequest extends React.Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       switchIsOn: true,
       altLocationIsVisible: false,
@@ -31,8 +31,17 @@ class PlaceARequest extends React.Component {
   onSubmit() {
     let venue = this.state.venue;
     let order = this.state.order;
+    //Push to firebase
+    this.setState({
+      venue: '',
+      order: '',
+      altLocation: '',
+    });
     this.props.navigator.push({
-      component: SearchingForStork
+      component: SearchingForStork,
+      passprops: {
+        navigator: this.props.navigator,
+      }
     });
   }
   switchTheWitch () {

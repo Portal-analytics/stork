@@ -11,15 +11,14 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import YANavigator from 'react-native-ya-navigator';
 import Spinner from 'react-native-spinkit';
 import HomePage from './HomePage';
-import Checkmark from '../logos/checkmark.png';
+import Logo from '../storklogo.jpg';
 
 
-class SearchingForStork extends React.Component {
+class ConfirmCheckOut extends React.Component {
   
-  pushToHomePage() {
-    this.props.navigator.push({
-      component: HomePage
-    });
+  goBackToHomePage() {
+    this.props.navigator.pop();
+
   }
 
   render() {
@@ -28,10 +27,10 @@ class SearchingForStork extends React.Component {
         delegate={this}
         style={styles.container}
         >
-        <Image style={styles.picFormat} source={Checkmark} />
-        <Text style={styles.text}> Your request has been placed! </Text>
-        <Text style={styles.text}>You can now return to Home while we find you a Stork! </Text>
-        <TouchableHighlight style={styles.button} onPress={this.pushToHomePage.bind(this)}>
+        <Image style={styles.picFormat} source={Logo} />
+        <Text style={styles.text}> You have stopped being a Stork! </Text>
+        <Text style={styles.text}>You can now return to Home! </Text>
+        <TouchableHighlight style={styles.button} onPress={this.goBackToHomePage.bind(this)}>
           <Text style={styles.buttonText}> Go Back To Home </Text>
         </TouchableHighlight>
       </YANavigator.Scene>
@@ -39,13 +38,10 @@ class SearchingForStork extends React.Component {
   }
 
   static navigationDelegate = {
-    id: 'SearchingForStork',
+    id: 'ConfirmCheckOut',
     navBarBackgroundColor: 'white',
     renderTitle() {
-      return (<View><Text style={styles.title}> Request Placed </Text></View>)
-    },
-    renderNavBarLeftPart() {
-      return(<View/>)
+      return (<View><Text style={styles.title}> You have Checked Out! </Text></View>)
     },
   }
 }
@@ -53,7 +49,6 @@ class SearchingForStork extends React.Component {
 const styles = StyleSheet.create({
     container: {
       flex: 1,
-      justifyContent: 'center',
       alignItems: 'center',
       backgroundColor: '#A1CCDD',
     },
@@ -62,7 +57,7 @@ const styles = StyleSheet.create({
       textAlign: 'center'
     },
     title: {
-      fontSize: 24,
+      fontSize: 20,
       fontFamily: 'Helvetica',
       textAlign: 'center',
       color: 'black',
@@ -84,11 +79,10 @@ const styles = StyleSheet.create({
       alignSelf: 'center'
     },
     picFormat: {
-      height: 200,
-      width: 200,
+      height: 400,
+      width: 400,
       resizeMode: 'contain',
-      marginBottom: 20,
     }
 });
 
-module.exports = SearchingForStork;
+module.exports = ConfirmCheckOut;

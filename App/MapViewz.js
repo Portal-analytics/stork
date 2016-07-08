@@ -13,7 +13,6 @@ import {
   Image,
   TextInput,
   Switch,
-  NavigatorIOS,
   ListView,
   TabBarIOS,
 } from 'react-native';
@@ -58,8 +57,7 @@ class MapViewz extends React.Component {
 
   render () {
     return (
-      <YANavigator.Scene
-        delegate={this}
+      <View
         style={styles.mapContainer}
         >
         <MapView
@@ -81,24 +79,9 @@ class MapViewz extends React.Component {
           />
         ))}
           </MapView>
-        <View>
-        <TouchableOpacity
-        style={styles.back}
-        onPress= {console.log('link back to listview')}
-        >
-          <Text style={{ fontWeight: 'bold', fontSize: 30}}>&larr;</Text>
-        </TouchableOpacity>
-        </View>
-      </YANavigator.Scene>
+       
+      </View>
   );
-  }
-
-  static navigationDelegate = {
-    id: 'MapViewz',
-    navBarBackgroundColor: '#A1CCDD',
-    renderTitle() {
-      return (<View><Text style={styles.title}>Stork</Text></View>)
-    },
   }
 }
 
@@ -107,7 +90,7 @@ const styles = StyleSheet.create({
       flex: 1,
       justifyContent: 'center',
       alignItems: 'center',
-      backgroundColor: '#A1CCDD',
+  
     },
     map: {
       position: 'absolute',
