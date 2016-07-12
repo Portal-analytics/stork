@@ -32,12 +32,12 @@ import Browse from './Browse';
 import NavBarTitle from './NavBarTitle';
 import Logo from '../storklogo.jpg';
 
+
 class Homepage extends React.Component {
-  
+
   constructor(props) {
   super(props);
   this.state = {
-    userName: props.userName,
     password: props.password,
     selectedTab: 'Order',
     notifCount: 0,
@@ -47,6 +47,8 @@ class Homepage extends React.Component {
     orderIndex: 0,
     deliverIndex: 2,
     checkedInValue: 'Check-In',
+    uid: '',
+    email: '',
   };
   this.goToConfirmCheckIn=this.goToConfirmCheckIn.bind(this);
   this.goToConfirmCheckOut=this.goToConfirmCheckOut.bind(this);
@@ -104,10 +106,11 @@ class Homepage extends React.Component {
   }
 
   //Next 2 Functions change the value of the segmented control
-  onOrderValueChange(value) { 
+  onOrderValueChange(value) {
       this.setState({
         currentOrderComponent: value,
       });
+
   }
 
   onDeliverValueChange(value) {
@@ -158,7 +161,7 @@ class Homepage extends React.Component {
         style={styles.container}
         >
         <TabBarIOS
-        
+
         unselectedTintColor={"#ff8000"}
         tintColor={"#ff8000"}
         barTintColor={"white"}>
@@ -197,7 +200,6 @@ class Homepage extends React.Component {
           </View>
         </Icon.TabBarItemIOS>
         </TabBarIOS>
-        
       </YANavigator.Scene>
     );
   }
@@ -206,7 +208,7 @@ class Homepage extends React.Component {
     id: 'HomePage',
     navBarBackgroundColor: '#A1CCDD',
     renderTitle() {
-        
+
         return (<View><Text style={styles.title}> Stork </Text></View>)
     },
     renderNavBarLeftPart() {

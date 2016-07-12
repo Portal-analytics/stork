@@ -16,48 +16,113 @@ import Icons from 'react-native-vector-icons';
 import YANavigator from 'react-native-ya-navigator';
 import StorkCheckIn from './StorkCheckIn';
 import FBSDK, {LoginButton, AccessToken} from 'react-native-fbsdk';
+import firebase from 'firebase';
+
+var provider = new firebase.auth.FacebookAuthProvider(); //still need to integrate
+var currentUser = false;
 
 class LoginPage extends React.Component {
 
-  constructor() {
-  super();
+
+
+  constructor(props) {
+  super(props);
+
   this.state = {
-    userName: '',
+    loaded: true,
+    email: '',
     password: '',
 
   };
 }
 
-_handleChangePage() {
-  LayoutAnimation.easeInEaseOut();
-    this.props.navigator.push({
-      component: HomePage,
-      props: {
-        userName: this.state.userName,
-        password: this.state.password,
-      }
+  writeUserData() {
 
+
+    const {email, password} = this.state
+    this.setState({
+      loaded: false,
+      email: this.state.email,
+      password: this.state.password,
     });
 
+    firebase.auth().createUserWithEmailAndPassword(email, password).catch(function(error){
+      if(error){
+        switch(error.code){
+          case "auth/email-already-in-use":
+          alert('Account cannot be created because email is already in use.')
+          break;
+          case "auth/invalid-email":
+          alert('The email is not valid (make sure its a .edu address)');
+          break;
+          case "auth/weak-password":
+          alert('Account cannot be created because password is too weak.')
+          default:
+          alert('Error creating user ' + error.code);
+        }
+      }
+    });
   }
+
+
+
+  _handleChangePage() {
+  const {email, password} = this.state
+firebase.auth().signInWithEmailAndPassword(email, password).catch(function(error){
+  if(error){
+    switch(error.code){
+      case "auth/wrong-password":
+      alert('Incorrect password, try again.')
+      break;
+      case "auth/invalid-email":
+      alert('The email is not valid (make sure its a .edu address)');
+      break;
+      case "auth/weak-password":
+      alert('Account cannot be created because password is too weak.')
+      default:
+      alert('Error signing in ' + error.code);
+    }
+  }
+
+});
+
+LayoutAnimation.easeInEaseOut();
+  this.props.navigator.push({
+  component: HomePage,
+  props: {
+    email: this.state.email,
+    password: this.state.password,
+  }
+
+});
+
+
+  }
+
 
   render() {
     return (
       <YANavigator.Scene delegate={this} style={styles.container}>
         <Image source={require('../storklogo.jpg')} style={styles.logoImage}/>
-        <Text style={styles.topInputText}> Username </Text>
+        <Text style={styles.topInputText}> email </Text>
         <TextInput
-        onChangeText={(userName) => this.setState({ userName })}
+        value={this.state.email}
+        onChangeText={(email) => this.setState({ email })}
+
+        ref='emailVal'
         style={styles.textEntry}
-        placeholder = 'Username'
+        placeholder = 'Email'
         autoCapitalize = "none"
 
         />
         <Text style={styles.topInputText}> Password </Text>
         <TextInput
+        value={this.state.password}
         onChangeText={(password) => this.setState({ password })}
+        onSubmitEditing={this.writeUserData}
         style={styles.textEntry}
         placeholder = "Password"
+        ref='passVal'
         secureTextEntry ={true}
         />
 
@@ -66,7 +131,11 @@ _handleChangePage() {
           <Text style={styles.buttonText}>Submit</Text>
         </TouchableHighlight>
         </View>
-
+        <View>
+        <TouchableHighlight style={styles.button} onPress={this.writeUserData.bind(this)}>
+        <Text> Sign up </Text>
+        </TouchableHighlight>
+        </View>
         <View style={styles.facebookButton}>
           <LoginButton
             publishPermissions={["publish_actions"]}

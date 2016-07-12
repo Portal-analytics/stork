@@ -15,6 +15,8 @@ import HomePage from './HomePage';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import YANavigator from 'react-native-ya-navigator';
 import Tabbar, { Tab, RawContent, IconWithBar, glypyMapMaker } from 'react-native-tabbar';
+import firebase from 'firebase';
+
 
 class PlaceARequest extends React.Component {
   constructor(props) {
@@ -25,17 +27,24 @@ class PlaceARequest extends React.Component {
       venue: '',
       order: '',
       altLocation: '',
+      user: firebase.auth().currentUser,
     };
+
   }
 
-  onSubmit() {
+  onSubmit(){
     let venue = this.state.venue;
     let order = this.state.order;
-    //Push to firebase
-    this.setState({
-      venue: '',
-      order: '',
-      altLocation: '',
+
+    var database = firebase.database();
+    var requestsRef = database.ref('requests/')
+    requestsRef.push({
+      venue: this.state.venue,
+      order: this.state.order,
+      uid: this.state.user.uid,
+      altLocation: this.state.altLocation,
+      status: 'waiting',
+      complete: false,
     });
     this.props.navigator.push({
       component: SearchingForStork,
@@ -83,7 +92,7 @@ class PlaceARequest extends React.Component {
       </View>
       <TextInput
       ref='alt location'
-      onChangeText={(altLocation) => this.setState({order})}
+      onChangeText={(altLocation) => this.setState({altLocation})}
       value={this.state.altLocation}
       style={this.displayAltLocation}
       editable = {this.isEditable}
@@ -149,13 +158,13 @@ class PlaceARequest extends React.Component {
       flex: 1
     },
     displayAltLocation: {
-      height: 40, 
-      borderColor: 'gray', 
-      width: 280, 
+      height: 40,
+      borderColor: 'gray',
+      width: 280,
       flex: 1,
       paddingLeft: 5,
-      borderRadius: 8, 
-      borderWidth: 1, 
+      borderRadius: 8,
+      borderWidth: 1,
       backgroundColor: 'white',
     },
     button: {
