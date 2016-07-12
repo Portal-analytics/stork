@@ -37,6 +37,7 @@ class StorkCheckIn extends React.Component {
     checkinsRef.push({
       destination: this.state.destination,
       uid: this.state.user.uid,
+      active: true,
     });
     this.props.navigator.push({
       component: ConfirmCheckIn
