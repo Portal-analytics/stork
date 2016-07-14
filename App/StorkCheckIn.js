@@ -17,7 +17,10 @@ import ConfirmCheckIn from './ConfirmCheckIn';
 class StorkCheckIn extends React.Component {
   constructor() {
     super();
+
+
     this.state = {
+      checkinsRef: firebase.database().ref('checkins/'),
       destination: '',
       isAtDestination: true,
       user: firebase.auth().currentUser,
@@ -33,16 +36,25 @@ class StorkCheckIn extends React.Component {
   submitCheckIn () {
 
     let destination = this.state.destination;
-    var database = firebase.database();
-    var checkinsRef = database.ref('checkins/')
-    checkinsRef.push({
+
+    var newCheckin = this.state.checkinsRef.push({
       destination: this.state.destination,
       uid: this.state.user.uid,
       active: true,
-    });
-    this.props.goToConfirmCheckIn();
+
+     });
+     var checkinKey = newCheckin.key;
+     console.log('the checkin key is ' + checkinKey);
+    this.props.goToConfirmCheckIn(checkinKey);
 
   }
+
+  addCheckinKey(checkinKey) {
+    firebase.database().ref('checkins/' + checkinKey).set({
+      checkinKey: checkinKey,
+    });
+  }
+
 
   render() {
 

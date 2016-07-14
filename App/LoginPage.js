@@ -27,7 +27,6 @@ class LoginPage extends React.Component {
 
   constructor(props) {
   super(props);
-
   this.state = {
     loaded: true,
     email: '',
@@ -40,13 +39,28 @@ class LoginPage extends React.Component {
     this.props.navigator.push({
       id: 'SignUp'
     });
+
   }
-
-
 
   _handleChangePage() {
     const {email, password} = this.state
-    firebase.auth().signInWithEmailAndPassword(email, password).catch(function(error){
+    this.setState({
+      loaded: false,
+      email: this.state.email,
+      password: this.state.password,
+    });
+    //firebase.auth().signInWithRedirect(provider);
+    // firebase.auth().getRedirectResult().then(function(result){
+    //   if(result.credential){
+    //     var token = result.credential.accessToken;
+    //   }
+    //   var user = result.user;
+    // }).catch(function(error){
+    //   var errorCode = error.code;
+    //   var errorMessage = error.message;
+    //   alert(errorMessage);
+    // });
+    firebase.auth().createUserWithEmailAndPassword(email, password).catch(function(error){
       if(error){
         switch(error.code){
           case "auth/wrong-password":
@@ -94,7 +108,6 @@ class LoginPage extends React.Component {
         <TextInput
         value={this.state.password}
         onChangeText={(password) => this.setState({ password })}
-        onSubmitEditing={this.writeUserData}
         style={styles.textEntry}
         placeholder = "Password"
         ref='passVal'
@@ -116,6 +129,7 @@ class LoginPage extends React.Component {
         </View>
         
       </View>
+
     );
   }
 

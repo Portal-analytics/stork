@@ -1,6 +1,5 @@
-'use strict';
-
-import React, { Component } from 'react';
+'use strict'
+import React, {Component} from 'react';
 import {
   AppRegistry,
   StyleSheet,
@@ -18,86 +17,83 @@ import {
   SegmentedControlIOS,
 } from 'react-native';
 
-class Browse extends React.Component {
-
-  constructor(props) {
+class RequestList extends React.Component {
+  constructor(props){
     super(props);
-  //  var recentCheckins = {};
-
     this.state = {
       dataSource: new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2}),
-
     }
-    this.checkinsRef = firebase.database().ref('checkins/');
+    // var sorter = '';
+    // if(this.props.sortBy === '$$$'){
+    //   sorter = 'orderByChild(venue)'
+    // }
+    this.requestRef = firebase.database().ref('requests/');
   }
+
+
 
   getRef() {
     return firebase.database().ref();
   }
 
-listenForStorks(checkinsRef){
-checkinsRef.on('value', (snap) => {
-    var recentCheckins = [];
-    snap.forEach((child) => {
-      recentCheckins.push({
-        active: child.val().active,
-        destination: child.val().destination,
-        uid: child.val().uid,
-        _key: child.key,
+  listenForRequests(requestRef){
+    requestRef.on('value', (snap) => {
+      var recentRequests = [];
+      snap.forEach((child) => {
+        recentRequests.push({
+          altLocation: child.val().altLocation,
+          complete: child.val().complete,
+          order: child.val().order,
+          status: child.val().status,
+          uid: child.val().uid,
+          venue: child.val().venue,
+        });
+      });
+      this.setState({
+        dataSource: this.state.dataSource.cloneWithRows(recentRequests)
       });
     });
-    console.log(this);
-    this.setState({
-      dataSource: this.state.dataSource.cloneWithRows(recentCheckins)
-    });
-  });
-}
+  }
   componentDidMount(){
-    console.log(this);
-    this.listenForStorks(this.checkinsRef);
+    this.listenForRequests(this.requestRef);
   }
 
-_renderSeperator(sectionID: number, rowID: number, adjacentRowHighlighted: bool){
-  return(
-    <View
-    key={`${sectionID}-${rowID}`}
-    style={{
-      height: adjacentRowHighlighted ? 4 : 1,
-      backgroundColor: adjacentRowHighlighted ? '#3B5998' : '#CCCCCC',
-    }}
-    />
-  );
-}
+  _renderSeperator(sectionID: number, rowID: number, adjacentRowHighlighted: bool){
+    return(
+      <View
+      key={`${sectionID}-${rowID}`}
+      style= {{
+        height: adjacentRowHighlighted ? 4 : 1,
+        backgroundColor: adjacentRowHighlighted ? '#3B5998' : '#CCCCCC'
+      }}
+      />
+    );
+  }
 
-  getAvailableStorks(index) {
+  getAvailableRequests(index){
     return(
       <View style={styles.spacer}>
-      <Text style={styles.menuItems}> {index.destination} </Text>
+      <Text style={styles.menuItems}>
+      {index.order}
+      </Text>
       </View>
     )
-    //pulls available stork info from firebase and returns a list view
   }
-
   render() {
-    console.log('render');
-
-    return (
+    return(
       <View style={styles.container}>
-        <ScrollView>
-        <ListView
-        style={styles.picContainer}
-        dataSource = {this.state.dataSource}
-        renderSeparator = {this._renderSeperator}
-        renderRow={(rowData) => this.getAvailableStorks(rowData)}
-        >
-        </ListView>
-        </ScrollView>
-
+      <ScrollView>
+      <ListView
+      style={styles.picContainer}
+      dataSource={this.state.dataSource}
+      renderRow={(rowData) => this.getAvailableRequests(rowData)}
+      >
+      </ListView>
+      </ScrollView>
       </View>
-      )
+    )
   }
 }
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -172,4 +168,4 @@ const styles = StyleSheet.create({
   },
 });
 
-module.exports = Browse;
+module.exports = RequestList;
