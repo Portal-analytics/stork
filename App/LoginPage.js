@@ -10,10 +10,10 @@ import {
   Image,
   TextInput,
   LayoutAnimation,
+  Navigator
 } from 'react-native';
 import HomePage from './HomePage';
 import Icons from 'react-native-vector-icons';
-import YANavigator from 'react-native-ya-navigator';
 import StorkCheckIn from './StorkCheckIn';
 import FBSDK, {LoginButton, AccessToken} from 'react-native-fbsdk';
 import firebase from 'firebase';
@@ -36,21 +36,21 @@ class LoginPage extends React.Component {
   };
 }
 
-  writeUserData() {
-
-
-    const {email, password} = this.state
-    this.setState({
-      loaded: false,
-      email: this.state.email,
-      password: this.state.password,
+  pushToSignUp() {
+    this.props.navigator.push({
+      id: 'SignUp'
     });
+  }
 
-    firebase.auth().createUserWithEmailAndPassword(email, password).catch(function(error){
+
+
+  _handleChangePage() {
+    const {email, password} = this.state
+    firebase.auth().signInWithEmailAndPassword(email, password).catch(function(error){
       if(error){
         switch(error.code){
-          case "auth/email-already-in-use":
-          alert('Account cannot be created because email is already in use.')
+          case "auth/wrong-password":
+          alert('Incorrect password, try again.')
           break;
           case "auth/invalid-email":
           alert('The email is not valid (make sure its a .edu address)');
@@ -58,60 +58,35 @@ class LoginPage extends React.Component {
           case "auth/weak-password":
           alert('Account cannot be created because password is too weak.')
           default:
-          alert('Error creating user ' + error.code);
+          alert('Error signing in ' + error.code);
         }
       }
+
+    });
+
+
+    LayoutAnimation.easeInEaseOut();
+    this.props.navigator.push({
+      id: 'HomePage',
+      props: {
+        email: this.state.email,
+        password: this.state.password,
+      }
+
     });
   }
 
-
-
-  _handleChangePage() {
-  const {email, password} = this.state
-firebase.auth().signInWithEmailAndPassword(email, password).catch(function(error){
-  if(error){
-    switch(error.code){
-      case "auth/wrong-password":
-      alert('Incorrect password, try again.')
-      break;
-      case "auth/invalid-email":
-      alert('The email is not valid (make sure its a .edu address)');
-      break;
-      case "auth/weak-password":
-      alert('Account cannot be created because password is too weak.')
-      default:
-      alert('Error signing in ' + error.code);
-    }
-  }
-
-});
-
-LayoutAnimation.easeInEaseOut();
-  this.props.navigator.push({
-  component: HomePage,
-  props: {
-    email: this.state.email,
-    password: this.state.password,
-  }
-
-});
-
-
-  }
-
-
   render() {
     return (
-      <YANavigator.Scene delegate={this} style={styles.container}>
+      <View style={styles.container}>
         <Image source={require('../storklogo.jpg')} style={styles.logoImage}/>
-        <Text style={styles.topInputText}> email </Text>
+        <Text style={styles.topInputText}> E-mail </Text>
         <TextInput
         value={this.state.email}
         onChangeText={(email) => this.setState({ email })}
-
         ref='emailVal'
         style={styles.textEntry}
-        placeholder = 'Email'
+        placeholder = 'E-mail'
         autoCapitalize = "none"
 
         />
@@ -132,45 +107,25 @@ LayoutAnimation.easeInEaseOut();
         </TouchableHighlight>
         </View>
         <View>
-        <TouchableHighlight style={styles.button} onPress={this.writeUserData.bind(this)}>
-        <Text> Sign up </Text>
+        <TouchableHighlight onPress={this.pushToSignUp.bind(this)}>
+        <Text style={styles.signupText}>Forgot your password?</Text>
+        </TouchableHighlight>
+        <TouchableHighlight onPress={this.pushToSignUp.bind(this)}>
+        <Text style={styles.signupText}> Don't have an account? Sign Up! </Text>
         </TouchableHighlight>
         </View>
-        <View style={styles.facebookButton}>
-          <LoginButton
-            publishPermissions={["publish_actions"]}
-            onLoginFinished={
-              (error, result) => {
-                if (error) {
-                  alert("login has error: " + result.error);
-                } else if (result.isCancelled) {
-                  alert("login is cancelled.");
-                } else {
-                  AccessToken.getCurrentAccessToken().then(
-                    (data) => {
-                      alert(data.accessToken.toString())
-                    }
-                  )
-                }
-              }
-            }
-            onLogoutFinished={() => alert("logout.")}/>
-        </View>
-      </YANavigator.Scene>
+        
+      </View>
     );
   }
 
-  static navigationDelegate = {
-    id: 'LoginPage',
-    navBarisHidden: true,
-
-  }
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#A1CCDD',
+    justifyContent: 'center'
   },
   welcome: {
     fontSize: 20,
@@ -227,9 +182,11 @@ const styles = StyleSheet.create({
   color: 'white',
   alignSelf: 'center'
   },
-  facebookButton: {
-    alignSelf: 'center'
-  },
+  signupText: {
+    textAlign: 'center',
+    fontSize: 18,
+    marginBottom: 5,
+  }
 });
 
 module.exports = LoginPage;

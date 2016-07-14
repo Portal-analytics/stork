@@ -6,9 +6,9 @@ import {
   View,
   TouchableHighlight,
   Image,
+  Navigator,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import YANavigator from 'react-native-ya-navigator';
 import Spinner from 'react-native-spinkit';
 import HomePage from './HomePage';
 import Logo from '../storklogo.jpg';
@@ -22,8 +22,7 @@ class ConfirmCheckIn extends React.Component {
 
   render() {
     return(
-      <YANavigator.Scene
-        delegate={this}
+      <View
         style={styles.container}
         >
         <Image style={styles.picFormat} source={Logo} />
@@ -32,17 +31,10 @@ class ConfirmCheckIn extends React.Component {
         <TouchableHighlight style={styles.button} onPress={this.goToHomePage.bind(this)}>
           <Text style={styles.buttonText}> Go Back To Home </Text>
         </TouchableHighlight>
-      </YANavigator.Scene>
+      </View>
       );
   }
 
-  static navigationDelegate = {
-    id: 'ConfirmCheckIn',
-    navBarBackgroundColor: 'white',
-    renderTitle() {
-      return (<View><Text style={styles.title}> You're a Stork! </Text></View>)
-    },
-  }
 }
 
 const styles = StyleSheet.create({

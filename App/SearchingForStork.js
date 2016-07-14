@@ -6,9 +6,9 @@ import {
   View,
   TouchableHighlight,
   Image,
+  Navigator
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import YANavigator from 'react-native-ya-navigator';
 import Spinner from 'react-native-spinkit';
 import HomePage from './HomePage';
 import Checkmark from '../logos/checkmark.png';
@@ -17,15 +17,12 @@ import Checkmark from '../logos/checkmark.png';
 class SearchingForStork extends React.Component {
   
   pushToHomePage() {
-    this.props.navigator.push({
-      component: HomePage
-    });
+    this.props.navigator.pop();
   }
 
   render() {
     return(
-      <YANavigator.Scene
-        delegate={this}
+      <View
         style={styles.container}
         >
         <Image style={styles.picFormat} source={Checkmark} />
@@ -34,20 +31,10 @@ class SearchingForStork extends React.Component {
         <TouchableHighlight style={styles.button} onPress={this.pushToHomePage.bind(this)}>
           <Text style={styles.buttonText}> Go Back To Home </Text>
         </TouchableHighlight>
-      </YANavigator.Scene>
+      </View>
       );
   }
 
-  static navigationDelegate = {
-    id: 'SearchingForStork',
-    navBarBackgroundColor: 'white',
-    renderTitle() {
-      return (<View><Text style={styles.title}> Request Placed </Text></View>)
-    },
-    renderNavBarLeftPart() {
-      return(<View/>)
-    },
-  }
 }
 
 const styles = StyleSheet.create({

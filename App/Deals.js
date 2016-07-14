@@ -16,10 +16,10 @@ import {
   ListView,
   ScrollView,
   SegmentedControlIOS,
+  Navigator
 } from 'react-native';
 import Drawer from 'react-native-drawer';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import YANavigator from 'react-native-ya-navigator';
 import StorkCheckIn from './StorkCheckIn';
 import PlaceARequest from './PlaceARequest';
 import MapViewz from './MapViewz';

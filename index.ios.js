@@ -9,11 +9,17 @@ import {
   TouchableHighlight,
   Image,
   TextInput,
+  Navigator,
 } from 'react-native';
 import LoginPage from './App/LoginPage';
 import HomePage from './App/HomePage';
+import ConfirmCheckIn from './App/ConfirmCheckIn';
+import ConfirmCheckOut from './App/ConfirmCheckOut';
+import SearchingForStork from './App/SearchingForStork';
+import SignUp from './App/SignUp';
+import Settings from './App/Settings';
+import FacebookLogin from './App/FacebookLogin';
 import Icons from 'react-native-vector-icons';
-import YANavigator from 'react-native-ya-navigator';
 import firebase from 'firebase';
 
 class Stork extends React.Component {
@@ -28,20 +34,91 @@ constructor(props) {
   });
 
 }
+noRoute(navigator) {
+  return (
+      <View style={{flex: 1, alignItems: 'stretch', justifyContent: 'center'}}>
+        <TouchableHighlight style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}
+            onPress={() => navigator.pop()}>
+          <Text style={{color: 'red', fontWeight: 'bold'}}>请在 index.js 的 renderScene 中配置这个页面的路由</Text>
+        </TouchableHighlight>
+      </View>
+    );
+}
+
+renderScene(route, nav) {
+    var routeID = route.id;
+    if(routeID === 'LoginPage') {
+        return (
+          <LoginPage 
+            navigator={nav}/>
+        );
+    }
+    if(routeID === 'HomePage') {
+      return (
+        <HomePage 
+          navigator={nav} 
+          title="Stork" />
+      );
+    }
+    if(routeID === 'ConfirmCheckIn') {
+      return (
+        <ConfirmCheckIn 
+          navigator={nav} 
+          title="Stork" />
+      );
+    }
+    if(routeID === 'ConfirmCheckOut') {
+      return (
+        <ConfirmCheckOut 
+          navigator={nav} 
+          title="Stork" />
+      );
+    }
+    if(routeID === 'SearchingForStork') {
+      return (
+        <SearchingForStork 
+          navigator={nav} 
+          title="Stork" />
+      );
+    }
+    if(routeID === 'SignUp') {
+      return (
+        <SignUp 
+          navigator={nav} 
+          title="Stork" />
+      );
+    }
+    if(routeID === 'Settings') {
+      return (
+        <Settings
+          navigator={nav} />
+        );
+    }
+    if(routeID === 'FacebookLogin') {
+      return (
+        <FacebookLogin
+          navigator={nav} />
+        )
+    }
+    return this.noRoute(nav);
+  }
 
   render() {
     return (
-      <YANavigator
-                    itemWrapperStyle={styles.navWrap}
-                    style={styles.nav}
-                    navBarStyle={{
-                      backgroundColor: '#A1CCDD',
-                    }}
-                    initialRoute={{
-                      component: LoginPage,
-                    }} />
+      <Navigator
+        style={styles.nav}
+        initialRoute={{id: 'LoginPage', index: 0}}
+        renderScene={this.renderScene.bind(this)}
+        configureScene={(route) => {
+              if (route.sceneConfig) {
+                return route.sceneConfig;
+              }
+              return Navigator.SceneConfigs.FloatFromRight;
+            }}/>
+                    
     );
   }
+
 }
 
 const styles = StyleSheet.create({

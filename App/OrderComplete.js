@@ -5,10 +5,10 @@ import {
   StyleSheet,
   Text,
   View,
+  Navigator
 } from 'react-native';
 import StarRating from 'react-native-simple-rating';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import YANavigator from 'react-native-ya-navigator';
 
 class OrderComplete extends React.Component {
 
@@ -27,8 +27,7 @@ class OrderComplete extends React.Component {
   render() {
     var time = new Date();
     return(
-      <YANavigator.Scene
-        delegate={this}
+      <View
         style={styles.container}
         >
         <Text> {time.toString()} </Text>
@@ -40,14 +39,10 @@ class OrderComplete extends React.Component {
         rating={this.state.starCount}
         selectedStar={(rating) => this.onStar(rating)}
         />
-      </YANavigator.Scene>
+      </View>
       );
   }
 
-  static navigationDelegate = {
-    id: 'OrderComplete',
-    navBarBackgroundColor: 'white',
-  }
 }
 
 module.exports = OrderComplete;
