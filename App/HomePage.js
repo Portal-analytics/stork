@@ -28,6 +28,7 @@ import MapViewz from './MapViewz';
 import ConfirmCheckIn from './ConfirmCheckIn';
 import ConfirmCheckOut from './ConfirmCheckOut';
 import StorkCheckOut from './StorkCheckOut';
+import RequestList from './RequestList';
 import Browse from './Browse';
 import NavBarTitle from './NavBarTitle';
 import Logo from '../storklogo.jpg';
@@ -49,6 +50,7 @@ class Homepage extends React.Component {
     checkedInValue: 'Check-In',
     uid: '',
     email: '',
+    //checkinKey: '',
   };
   this.goToConfirmCheckIn=this.goToConfirmCheckIn.bind(this);
   this.goToConfirmCheckOut=this.goToConfirmCheckOut.bind(this);
@@ -64,9 +66,9 @@ class Homepage extends React.Component {
         )
     } else if (this.state.currentOrderComponent === 'Browse') {
       return (
-        <View>
+        <ScrollView style={styles.scrollContainer}>
           <Browse/>
-        </View>
+        </ScrollView>
         )
     } else if (this.state.currentOrderComponent === 'Deals') {
       return (
@@ -81,14 +83,15 @@ class Homepage extends React.Component {
   renderDeliverView() {
     if (this.state.currentDeliverComponent === 'New') {
       return(
-        <View style={styles.container}>
-
-        </View>
+        <ScrollView style={styles.scrollContainer}>
+          <RequestList sortBy={this.state.currentDeliverComponent} />
+        </ScrollView>
         )
     } else if (this.state.currentDeliverComponent === '$$$') {
       return (
-        <View style={styles.container}>
-        </View>
+        <ScrollView style={styles.scrollContainer}>
+          <RequestList sortBy={this.state.currentDeliverComponent}/>
+        </ScrollView>
         )
     } else if (this.state.currentDeliverComponent === 'Check-In') {
       return (
@@ -99,7 +102,7 @@ class Homepage extends React.Component {
     } else if (this.state.currentDeliverComponent === 'Check Out') {
       return (
         <View style={styles.container}>
-          <StorkCheckOut goToConfirmCheckOut={this.goToConfirmCheckOut}/>
+          <StorkCheckOut checkinKey={this.state.checkinKey} goToConfirmCheckOut={this.goToConfirmCheckOut}/>
         </View>
         )
     }
@@ -131,7 +134,7 @@ class Homepage extends React.Component {
     });
   }
 
-  goToConfirmCheckIn() {
+  goToConfirmCheckIn(checkinKey) {
     this.props.navigator.push({
       component: ConfirmCheckIn,
     });
@@ -139,10 +142,14 @@ class Homepage extends React.Component {
       currentDeliverComponent: '$$$',
       deliverIndex: 1,
       checkedInValue: 'Check Out',
+      checkinKey: checkinKey,
     });
+    console.log(this.props.checkinKey);
+    console.log(this.state.checkinKey);
+    console.log(checkinKey);
   }
 
-  goToConfirmCheckOut() {
+  goToConfirmCheckOut(checkinKey) {
     this.props.navigator.push({
       component: ConfirmCheckOut,
     });
@@ -150,7 +157,11 @@ class Homepage extends React.Component {
       currentDeliverComponent: 'Check-In',
       deliverIndex: 2,
       checkedInValue: 'Check-In',
+      checkinKey: this.state.checkinKey,
     });
+    console.log('check' + checkinKey);
+    console.log('pls help' + this.state.checkinKey);
+
   }
 
   render() {

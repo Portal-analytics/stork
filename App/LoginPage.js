@@ -27,7 +27,13 @@ class LoginPage extends React.Component {
 
   constructor(props) {
   super(props);
-
+  // FB.init({
+  //   appId: '293538377660263',
+  //   status: true,
+  //   xfbml: true,
+  //   version: 'v2.6'
+  // });
+  // FB.Event.subscribe('auth.authResponseChange', checkLoginState);
   this.state = {
     loaded: true,
     email: '',
@@ -36,8 +42,28 @@ class LoginPage extends React.Component {
   };
 }
 
-  writeUserData() {
+  checkLoginState(event){
+    if(event.authResponse) {
+      var unsubscribe = firebase.auth().onAuthStateChanged(function(firebaseUser){
+        unsubscribe();
+        if(!isUserEqual(event.authResponse, firebaseUser)) {
+          var credential = firebase.auth.FacebookAuthProvider.credential(
+            event.authResponse.accessToken);
+            firebase.auth().signInWithCredential(credential).catch(function(error) {
+              var errorMessage = error.message;
+              alert(errorMessage);
+            });
+        } else {
 
+        }
+      });
+    } else {
+      firebase.auth().signOut();
+    }
+  }
+
+  writeUserData() {
+  var provider = new firebase.auth.FacebookAuthProvider();
 
     const {email, password} = this.state
     this.setState({
@@ -45,7 +71,17 @@ class LoginPage extends React.Component {
       email: this.state.email,
       password: this.state.password,
     });
-
+    //firebase.auth().signInWithRedirect(provider);
+    // firebase.auth().getRedirectResult().then(function(result){
+    //   if(result.credential){
+    //     var token = result.credential.accessToken;
+    //   }
+    //   var user = result.user;
+    // }).catch(function(error){
+    //   var errorCode = error.code;
+    //   var errorMessage = error.message;
+    //   alert(errorMessage);
+    // });
     firebase.auth().createUserWithEmailAndPassword(email, password).catch(function(error){
       if(error){
         switch(error.code){
@@ -132,13 +168,11 @@ LayoutAnimation.easeInEaseOut();
         </TouchableHighlight>
         </View>
         <View>
-        <TouchableHighlight style={styles.button} onPress={this.writeUserData.bind(this)}>
-        <Text> Sign up </Text>
-        </TouchableHighlight>
+
         </View>
         <View style={styles.facebookButton}>
           <LoginButton
-            publishPermissions={["publish_actions"]}
+
             onLoginFinished={
               (error, result) => {
                 if (error) {
@@ -146,9 +180,13 @@ LayoutAnimation.easeInEaseOut();
                 } else if (result.isCancelled) {
                   alert("login is cancelled.");
                 } else {
+
                   AccessToken.getCurrentAccessToken().then(
                     (data) => {
-                      alert(data.accessToken.toString())
+                      for(var key in data){
+                        console.log(key);
+                      }
+                      firebase.auth().signInWithCredential(data.accessToken.toString());
                     }
                   )
                 }

@@ -16,8 +16,8 @@ import ConfirmCheckOut from './ConfirmCheckOut';
 
 class StorkCheckOut extends React.Component {
 
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       destination: '',
       isAtDestination: true,
@@ -26,16 +26,21 @@ class StorkCheckOut extends React.Component {
 
   submitCheckOut () {
     //Have to do logic to check out user and take it off the map
-    //Push info to Firebase
+    var checkOutRef = firebase.database().ref('checkins/');
+    var check = this.props.checkinKey
+    firebase.database().ref('checkins/' + check).update({
+        active: false,
+      });
+
     this.props.goToConfirmCheckOut();
-    
+
   }
 
   render() {
 
     return (
       <View style={styles.container}>
-        <Text style={styles.header}> Check Out </Text> 
+        <Text style={styles.header}> Check Out </Text>
         <Text style={styles.checkInText}> This allows you to stop being a Stork! </Text>
         <View style={styles.submitView}>
           <TouchableHighlight style={styles.button} onPress={this.submitCheckOut.bind(this)}>
@@ -100,12 +105,12 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
   },
   inputText: {
-    height: 40, 
-    borderColor: 'gray',  
+    height: 40,
+    borderColor: 'gray',
     flex: 1,
     paddingLeft: 5,
-    borderRadius: 8, 
-    borderWidth: 1, 
+    borderRadius: 8,
+    borderWidth: 1,
     backgroundColor: 'white',
     alignSelf: 'stretch'
   },
