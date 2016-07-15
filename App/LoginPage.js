@@ -35,9 +35,9 @@ class LoginPage extends React.Component {
   };
 }
 
-  pushToSignUp() {
+  pushToFacebookLogin() {
     this.props.navigator.push({
-      id: 'SignUp'
+      id: 'FacebookLogin'
     });
 
   }
@@ -49,18 +49,8 @@ class LoginPage extends React.Component {
       email: this.state.email,
       password: this.state.password,
     });
-    //firebase.auth().signInWithRedirect(provider);
-    // firebase.auth().getRedirectResult().then(function(result){
-    //   if(result.credential){
-    //     var token = result.credential.accessToken;
-    //   }
-    //   var user = result.user;
-    // }).catch(function(error){
-    //   var errorCode = error.code;
-    //   var errorMessage = error.message;
-    //   alert(errorMessage);
-    // });
-    firebase.auth().createUserWithEmailAndPassword(email, password).catch(function(error){
+
+    firebase.auth().signInWithEmailAndPassword(email, password).catch(function(error){
       if(error){
         switch(error.code){
           case "auth/wrong-password":
@@ -119,10 +109,10 @@ class LoginPage extends React.Component {
         </TouchableHighlight>
         </View>
         <View>
-        <TouchableHighlight onPress={this.pushToSignUp.bind(this)}>
+        <TouchableHighlight onPress={this.pushToFacebookLogin.bind(this)}>
         <Text style={styles.signupText}>Forgot your password?</Text>
         </TouchableHighlight>
-        <TouchableHighlight onPress={this.pushToSignUp.bind(this)}>
+        <TouchableHighlight onPress={this.pushToFacebookLogin.bind(this)}>
         <Text style={styles.signupText}> Dont have an account? Sign Up! </Text>
         </TouchableHighlight>
         </View>

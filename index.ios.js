@@ -49,42 +49,43 @@ renderScene(route, nav) {
     var routeID = route.id;
     if(routeID === 'LoginPage') {
         return (
-          <LoginPage 
+          <LoginPage
             navigator={nav}/>
         );
     }
     if(routeID === 'HomePage') {
       return (
-        <HomePage 
-          navigator={nav} 
+        <HomePage
+          navigator={nav}
           title="Stork" />
       );
     }
     if(routeID === 'ConfirmCheckIn') {
       return (
-        <ConfirmCheckIn 
-          navigator={nav} 
+        <ConfirmCheckIn
+          navigator={nav}
           title="Stork" />
       );
     }
     if(routeID === 'ConfirmCheckOut') {
       return (
-        <ConfirmCheckOut 
-          navigator={nav} 
+        <ConfirmCheckOut
+          navigator={nav}
           title="Stork" />
       );
     }
     if(routeID === 'SearchingForStork') {
       return (
-        <SearchingForStork 
-          navigator={nav} 
+        <SearchingForStork
+          navigator={nav}
           title="Stork" />
       );
     }
     if(routeID === 'SignUp') {
       return (
-        <SignUp 
-          navigator={nav} 
+        <SignUp
+          navigator={nav}
+          {...route.passProps}
           title="Stork" />
       );
     }
@@ -97,7 +98,8 @@ renderScene(route, nav) {
     if(routeID === 'FacebookLogin') {
       return (
         <FacebookLogin
-          navigator={nav} />
+          navigator={nav}
+          {...route.passProps} />
         )
     }
     return this.noRoute(nav);
@@ -115,7 +117,7 @@ renderScene(route, nav) {
               }
               return Navigator.SceneConfigs.FloatFromRight;
             }}/>
-                    
+
     );
   }
 

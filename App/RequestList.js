@@ -73,6 +73,7 @@ class RequestList extends React.Component {
   getAvailableRequests(index){
     return(
       <View style={styles.spacer}>
+      
       <Text style={styles.menuItems}>
       {index.order}
       </Text>
@@ -86,6 +87,7 @@ class RequestList extends React.Component {
       <ListView
       style={styles.picContainer}
       dataSource={this.state.dataSource}
+      renderSeparator={this._renderSeperator}
       renderRow={(rowData) => this.getAvailableRequests(rowData)}
       >
       </ListView>

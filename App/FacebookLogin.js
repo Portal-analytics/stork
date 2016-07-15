@@ -10,9 +10,10 @@ import {
   Navigator
 } from 'react-native';
 import HomePage from './HomePage';
+import SignUp from './SignUp';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import firebase from 'firebase';
-import FBSDK, {LoginButton, AccessToken} from 'react-native-fbsdk';
+import FBSDK, {LoginButton, AccessToken, GraphRequest, GraphRequestManager} from 'react-native-fbsdk';
 
 
 
@@ -21,20 +22,35 @@ class FacebookLogin extends React.Component {
   constructor(props) {
   super(props);
 
+  this._responseInfoCallback=this._responseInfoCallback.bind(this);
   this.state = {
     email: '',
     password: '',
     firstName: '',
     lastName: '',
+    verifyPassword: '',
+    loaded: true,
+    phoneNumber: '',
+
   };
 }
 _responseInfoCallback(error, result){
+
   if(error){
     alert('error ' + error.toString());
   } else {
-    alert('Success ' + result.toString());
-    console.log(result);
+    this.pushtoSignUp(result);
   }
+}
+
+pushtoSignUp(result) {
+  console.log(result);
+  this.props.navigator.push({
+    id: 'SignUp',
+    passProps: {
+      result: result,
+    }
+  });
 }
 
   render() {
@@ -60,7 +76,7 @@ _responseInfoCallback(error, result){
   renderScene() {
     return (
       <View style={styles.container}>
-        <Text style={styles.header}>Youre Almost Done!</Text>
+        <Text style={styles.header}>Log In with Facebook</Text>
 
         <Text style={styles.facebookText}>Stork takes security very seriously. For the safety of our users, we require users to link their Facebooks to their Stork accounts.</Text>
 
@@ -88,7 +104,7 @@ _responseInfoCallback(error, result){
                           {
                             parameters: {
                               fields: {
-                                string: 'name,picture'
+                                string: 'name,picture,first_name,last_name'
                               },
                               accessToken: {
                                 string: data.accessToken.toString()

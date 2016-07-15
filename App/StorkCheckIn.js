@@ -9,7 +9,8 @@ import {
   Image,
   TextInput,
   Switch,
-  Navigator
+  Navigator,
+  Picker,
 } from 'react-native';
 import Icons from 'react-native-vector-icons';
 import ConfirmCheckIn from './ConfirmCheckIn';
@@ -23,6 +24,7 @@ class StorkCheckIn extends React.Component {
       checkinsRef: firebase.database().ref('checkins/'),
       destination: '',
       isAtDestination: true,
+      eta: '',
       user: firebase.auth().currentUser,
     };
   }
@@ -40,6 +42,7 @@ class StorkCheckIn extends React.Component {
     var newCheckin = this.state.checkinsRef.push({
       destination: this.state.destination,
       uid: this.state.user.uid,
+      eta: this.state.eta,
       active: true,
 
      });
@@ -56,14 +59,15 @@ class StorkCheckIn extends React.Component {
 
 
   render() {
-
+    var alt = (!this.state.isAtDestination)?
+    (<TextInput style={styles.inputText} maxLength={2} keyboardType='numeric' placeholder='Estimated minutes until arrival' onChangeText={(eta) => this.setState({eta})}/>) : null;
     return (
       <View style={styles.container}>
       <Text style={styles.header}> Check-In </Text>
       <Text style={styles.checkInText}> Check-ins allow you to notify others where you will be so they can submit requests to you before you order</Text>
       <View style={styles.or}>
       <Text style ={styles.checkInText}> Destination </Text>
-      <View >
+      <View>
       <TextInput
       style={styles.inputText}
       ref = 'destination'
@@ -84,6 +88,7 @@ class StorkCheckIn extends React.Component {
       />
       <Text style={styles.checkInText}> Currently here </Text>
       </View>
+      <View>{alt}</View>
       <View style={styles.submitView}>
       <TouchableHighlight style={styles.button} onPress={this.submitCheckIn.bind(this)}>
       <Text style={styles.buttonText}> Check in! </Text>
@@ -134,6 +139,16 @@ const styles = StyleSheet.create({
   justifyContent: 'center',
   paddingRight: 10,
   paddingLeft: 10,
+  },
+  displayETA: {
+    height: 40,
+    borderColor: 'gray',
+    width: 280,
+    flex: 1,
+    paddingLeft: 5,
+    borderRadius: 8,
+    borderWidth: 1,
+    backgroundColor: 'white',
   },
   buttonText: {
   fontSize: 18,

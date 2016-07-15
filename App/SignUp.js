@@ -24,16 +24,17 @@ class SignUp extends React.Component {
     this.state = {
       email: '',
       password: '',
-      firstName: '',
-      lastName: '',
+      firstName: this.props.result.first_name,
+      lastName: this.props.result.last_name,
       verifyPassword: '',
       loaded: true,
       phoneNumber: '',
+      profilePic: this.props.result.picture.data.url,
     };
-    this.pushToFacebook=this.pushToFacebook.bind(this);
+
   }
 
-  pushToFacebook(uid) {
+  pushtoHomePage(uid) {
     var database = firebase.database();
     var usersRef = database.ref('users/')
     usersRef.push({
@@ -41,13 +42,16 @@ class SignUp extends React.Component {
       lastName: this.state.lastName,
       email: this.state.email,
       uid: uid,
+      profilePic: this.state.profilePic,
+      phoneNumber: this.state.phoneNumber,
     });
     this.props.navigator.push({
-      id: 'FacebookLogin',
+      id: 'HomePage',
     });
+    Alert.alert('Account created!', 'Get Storkin!');
   }
 
-  createUser(pushToFacebook) {
+  createUser(pushtoHomePage) {
     var createAccount = true;
     var _this = this;
     if (this.state.password === this.state.verifyPassword && this.state.firstName != '' && this.state.lastName != '' && this.state.phoneNumber != '' && this.state.email.slice(-3) === 'edu') {
@@ -62,7 +66,7 @@ class SignUp extends React.Component {
         firebase.auth().createUserWithEmailAndPassword(email, password)
         .then(function(user){
           console.log(user);
-          _this.pushToFacebook(user.uid);
+          _this.pushtoHomePage(user.uid);
         })
         .catch(function(error){
           console.log(error);
@@ -81,13 +85,13 @@ class SignUp extends React.Component {
               break;
               default:
               Alert.alert('Error', 'Error creating user ' + error.code);
-              
+
             }
           }
           console.log(createAccount);
 
         });
-      
+
     } else if (this.state.email.slice(-3) != 'edu') {
       Alert.alert('Email not Valid', "You must sign up with a '.edu' address!", [{text: "I wont't do it again."}]);
     } else if (this.state.password != this.state.verifyPassword) {
@@ -99,17 +103,18 @@ class SignUp extends React.Component {
     // this.props.navigator.push({
     //   id: 'FacebookLogin',
     // });
-    
+
   }
 
 
   render() {
+
     return(
       <Navigator
           renderScene={this.renderScene.bind(this)}
-          navigator={this.props.navigator}
+          navigator={this.props}
           navigationBar={
-            <Navigator.NavigationBar 
+            <Navigator.NavigationBar
               style={{backgroundColor: '#A1CCDD'}}
                 routeMapper={{
                   LeftButton: (route, navigator, index, navState) =>
@@ -127,6 +132,7 @@ class SignUp extends React.Component {
   }
 
   renderScene() {
+    var pic = this.state.profilePic.toString();
     return (
       <View style={styles.container}>
         <Text style={styles.header}>Sign Up</Text>
@@ -188,7 +194,7 @@ class SignUp extends React.Component {
         ref='passVal'
         secureTextEntry ={true}
         />
-
+        <Image style={styles.facebookButton} source={{uri: pic}} ></Image>
 
         <View style={styles.facebookButton}>
           <TouchableOpacity style={styles.continueButton} onPress={this.createUser.bind(this)}>
