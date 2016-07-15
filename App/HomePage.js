@@ -7,6 +7,7 @@ import {
   Text,
   View,
   TouchableHighlight,
+  TouchableOpacity,
   Image,
   TextInput,
   TabBarIOS,
@@ -16,10 +17,11 @@ import {
   ListView,
   ScrollView,
   SegmentedControlIOS,
+  Navigator,
+  Modal
 } from 'react-native';
 import Drawer from 'react-native-drawer';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import YANavigator from 'react-native-ya-navigator';
 import StorkCheckIn from './StorkCheckIn';
 import SearchingForStork from './SearchingForStork';
 import Deals from './Deals';
@@ -28,9 +30,9 @@ import MapViewz from './MapViewz';
 import ConfirmCheckIn from './ConfirmCheckIn';
 import ConfirmCheckOut from './ConfirmCheckOut';
 import StorkCheckOut from './StorkCheckOut';
+import Settings from './Settings';
 import RequestList from './RequestList';
 import Browse from './Browse';
-import NavBarTitle from './NavBarTitle';
 import Logo from '../storklogo.jpg';
 
 
@@ -50,17 +52,21 @@ class Homepage extends React.Component {
     checkedInValue: 'Check-In',
     uid: '',
     email: '',
-    //checkinKey: '',
+    orderModalVisible: false,
+    settingsModalVisible: false,
   };
   this.goToConfirmCheckIn=this.goToConfirmCheckIn.bind(this);
   this.goToConfirmCheckOut=this.goToConfirmCheckOut.bind(this);
+  this.pushToSearchingForStork=this.pushToSearchingForStork.bind(this);
+  this.closeOrderModal=this.closeOrderModal.bind(this);
+  this.closeSettingsModal=this.closeSettingsModal.bind(this);
 }
 
   //Changes the scene based on which tab is pressed in the segment control for the Order Tab
   renderOrderScrollScreen() {
     if (this.state.currentOrderComponent === 'Map') {
       return(
-        <View style={styles.container}>
+        <View style={styles.innerContainer}>
           <MapViewz/>
         </View>
         )
@@ -95,7 +101,7 @@ class Homepage extends React.Component {
         )
     } else if (this.state.currentDeliverComponent === 'Check-In') {
       return (
-        <View style={styles.container}>
+        <View style={styles.innerContainer}>
           <StorkCheckIn goToConfirmCheckIn={this.goToConfirmCheckIn}/>
         </View>
         )
@@ -123,20 +129,25 @@ class Homepage extends React.Component {
   }
 
   orderTabUpdate() {
+    //console.log('order');
     this.setState({
       selectedTab: 'Order',
+      title: 'Stork',
     });
   }
 
   deliverTabUpdate() {
+
     this.setState({
       selectedTab: 'Deliver',
+      title: 'Deliver'
     });
+
   }
 
   goToConfirmCheckIn(checkinKey) {
     this.props.navigator.push({
-      component: ConfirmCheckIn,
+      id: 'ConfirmCheckIn',
     });
     this.setState({
       currentDeliverComponent: '$$$',
@@ -151,7 +162,7 @@ class Homepage extends React.Component {
 
   goToConfirmCheckOut(checkinKey) {
     this.props.navigator.push({
-      component: ConfirmCheckOut,
+      id: 'ConfirmCheckOut',
     });
     this.setState({
       currentDeliverComponent: 'Check-In',
@@ -164,13 +175,91 @@ class Homepage extends React.Component {
 
   }
 
+  showPlaceARequestModal() {
+    if(this.state.orderModalVisible === false) {
+      this.setState({
+        orderModalVisible: true,
+      });
+    }
+  }
+
+  closeOrderModal() {
+    this.setState({
+      orderModalVisible: false,
+    });
+  }
+
+  closeSettingsModal() {
+    this.setState({
+      settingsModalVisible: false,
+    });
+  }
+
+  pushToSearchingForStork() {
+    this.props.navigator.push({
+      id: 'SearchingForStork',
+    });
+  }
+
+  showSettingsModal() {
+    if(this.state.settingsModalVisible === false) {
+      this.setState({
+        settingsModalVisible: true,
+      });
+    }
+  }
+
   render() {
+    return (
+      <Navigator
+          renderScene={this.renderScene.bind(this)}
+          navigator={this.props.navigator}
+          configureScene={(route, navigator) =>
+            Navigator.SceneConfigs.FloatFromRight}
+          navigationBar={
+            <Navigator.NavigationBar 
+              style={{backgroundColor: '#A1CCDD'}}
+                routeMapper={{
+                  LeftButton: (route, navigator, index, navState) =>
+                    {return (<View style={{flexDirection: 'row'}}>
+                                <TouchableOpacity onPress={this.showSettingsModal.bind(this)}>
+                                  <Icon  style={{fontSize: 24, margin: 10}} name="cog" color={'gray'}/>
+                                </TouchableOpacity>
+                              </View>);},
+                  RightButton: (route, navigator, index, navState) =>
+                    { return (<View style={{flexDirection: 'row'}}>
+                                <TouchableOpacity onPress={this.showPlaceARequestModal.bind(this)}>
+                                  <Icon  style={{fontSize: 24, margin: 10}} name="shopping-cart" color={'gray'}/>
+                                </TouchableOpacity>
+                              </View>);},
+                  Title: (route, navigator, index, navState) =>
+                    { return (<View><Text style={styles.title}> {this.state.selectedTab} </Text></View>);},
+                }} />
+          } />
+    );
+  }
+
+  renderScene(route, navigator) {
     var checkedInValue = this.state.checkedInValue;
     return (
-      <YANavigator.Scene
-        delegate={this}
+      <View
         style={styles.container}
         >
+        <Modal
+          animationType={'slide'}
+          transparent={false}
+          visible={this.state.orderModalVisible}
+          >
+          <PlaceARequest pushToSearchingForStork={this.pushToSearchingForStork} closeOrderModal={this.closeOrderModal}/>
+        </Modal>
+        <Modal
+          animationType={'fade'}
+          transparent={false}
+          visible={this.state.settingsModalVisible}
+          >
+          <Settings closeSettingsModal={this.closeSettingsModal}/>
+        </Modal>
+
         <TabBarIOS
 
         unselectedTintColor={"#ff8000"}
@@ -182,7 +271,7 @@ class Homepage extends React.Component {
           selectedIconName="cutlery"
           selected={this.state.selectedTab === 'Order'}
           onPress={this.orderTabUpdate.bind(this)}>
-          <View style={styles.container}>
+          <View style={styles.innerContainer}>
           <SegmentedControlIOS
             values={['Map', 'Browse', 'Deals']}
             selectedIndex={this.state.orderIndex}
@@ -199,7 +288,7 @@ class Homepage extends React.Component {
           selectedIconName="truck"
           selected={this.state.selectedTab === 'Deliver'}
           onPress={this.deliverTabUpdate.bind(this)}>
-          <View style={styles.container}>
+          <View style={styles.innerContainer}>
             <SegmentedControlIOS
               values={['New', '$$$', checkedInValue]}
               selectedIndex={this.state.deliverIndex}
@@ -211,41 +300,20 @@ class Homepage extends React.Component {
           </View>
         </Icon.TabBarItemIOS>
         </TabBarIOS>
-      </YANavigator.Scene>
+      </View>
     );
   }
 
-  static navigationDelegate = {
-    id: 'HomePage',
-    navBarBackgroundColor: '#A1CCDD',
-    renderTitle() {
-
-        return (<View><Text style={styles.title}> Stork </Text></View>)
-    },
-    renderNavBarLeftPart() {
-      return(
-        <View style={{flexDirection: 'row'}}>
-          <TouchableHighlight onPress={() => 'goToPlaceARequest'}>
-            <Icon  style={{fontSize: 24}} name="cog" color={'gray'}/>
-          </TouchableHighlight>
-        </View>
-        )
-    },
-    renderNavBarRightPart() {
-      return(
-        <View style={{flexDirection: 'row'}}>
-          <TouchableHighlight onPress={() => 'goToPlaceARequest'}>
-            <Icon  style={{fontSize: 24}} name="shopping-cart" color={'gray'}/>
-          </TouchableHighlight>
-        </View>
-        )
-    },
-
-  }
 }
+
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
+    backgroundColor: '#A1CCDD',
+    marginTop: 64,
+  },
+  innerContainer: {
     flex: 1,
     backgroundColor: '#A1CCDD',
   },

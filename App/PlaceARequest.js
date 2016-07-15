@@ -6,14 +6,15 @@ import {
   Text,
   View,
   TouchableHighlight,
+  TouchableOpacity,
   Image,
   TextInput,
   Switch,
+  Navigator
 } from 'react-native';
 import SearchingForStork from './SearchingForStork';
 import HomePage from './HomePage';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import YANavigator from 'react-native-ya-navigator';
 import Tabbar, { Tab, RawContent, IconWithBar, glypyMapMaker } from 'react-native-tabbar';
 import firebase from 'firebase';
 
@@ -32,7 +33,13 @@ class PlaceARequest extends React.Component {
 
   }
 
+  onCancel(){
+    this.props.closeOrderModal();
+  }
+
   onSubmit(){
+   this.props.pushToSearchingForStork();
+   this.props.closeOrderModal();
     let venue = this.state.venue;
     let order = this.state.order;
 
@@ -46,12 +53,9 @@ class PlaceARequest extends React.Component {
       status: 'waiting',
       complete: false,
     });
-    this.props.navigator.push({
-      component: SearchingForStork,
-      passprops: {
-        navigator: this.props.navigator,
-      }
-    });
+
+    
+    
   }
   switchTheWitch () {
     this.setState({
@@ -61,17 +65,40 @@ class PlaceARequest extends React.Component {
   }
 
   render() {
+    return (
+      <Navigator
+          renderScene={this.renderScene.bind(this)}
+          navigator={this.props.navigator}
+          navigationBar={
+            <Navigator.NavigationBar 
+              style={{backgroundColor: 'white'}}
+                routeMapper={{
+                  LeftButton: (route, navigator, index, navState) =>
+                    {return (<View/>);},
+                  RightButton: (route, navigator, index, navState) =>
+                    { return (<View style={{flexDirection: 'row'}}>
+                                <TouchableOpacity onPress={this.onCancel.bind(this)}>
+                                  <Icon  style={{fontSize: 36, marginRight: 10, marginTop: 2,}} name="close" color={'red'}/>
+                                </TouchableOpacity>
+                              </View>);},
+                  Title: (route, navigator, index, navState) =>
+                    { return (<View><Text style={styles.title}>Place a Request</Text></View>);},
+                }} />
+          } />
+    );
+  }
+
+  renderScene() {
     var alt =  (this.state.altLocationIsVisible)?
     (<TextInput style={styles.displayAltLocation} placeholder='Alternative Location: eg. Rice 120'/>) : null;
 
     return (
-      <YANavigator.Scene
-        delegate={this}
+      <View
         style={styles.container}
         >
-      <View style ={styles.submit}>
+      <View style={styles.submit}>
       <TextInput
-      style={styles.displayAltLocation}
+      style={styles.venueInput}
       ref = 'venue'
       placeholder= 'Venue e.g. Chipotle, CVS, Clark Hall'
       color = '#000000'
@@ -112,79 +139,95 @@ class PlaceARequest extends React.Component {
       <Text style={styles.buttonText}> Stork it! </Text>
       </TouchableHighlight>
       </View>
-      </YANavigator.Scene>
+      </View>
     );
-    }
-
-    static navigationDelegate = {
-    id: 'PlaceARequest',
-    navBarBackgroundColor: 'white',
-    renderTitle() {
-      return (<View><Text style={styles.title}> Place a Request </Text></View>)
-    },
   }
-    }
-    const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      justifyContent: 'center',
-      alignItems: 'center',
-      backgroundColor: '#A1CCDD',
-    },
-    welcome: {
-      fontSize: 12,
-      textAlign: 'center',
-      marginTop: 20,
-      marginBottom: 20,
-    },
-    title: {
-      fontSize: 20,
-      fontFamily: 'Helvetica',
-      textAlign: 'center',
-      color: 'black',
-    },
-    submit: {
-      alignSelf: 'center',
-      margin: 10,
-    },
-    placeARequestSwitch:
-    {
-      margin: 10,
-    },
-    altLocationTextInput: {
-      height: 40,
-      borderColor: 'gray',
-      width: 280,
-      flex: 1
-    },
-    displayAltLocation: {
-      height: 40,
-      borderColor: 'gray',
-      width: 280,
-      flex: 1,
-      paddingLeft: 5,
-      borderRadius: 8,
-      borderWidth: 1,
-      backgroundColor: 'white',
-    },
-    button: {
-      height: 36,
-      flex: 1,
-      flexDirection: 'row',
-      backgroundColor: '#ff8000',
-      borderColor: '#ff8000',
-      borderWidth: 1,
-      borderRadius: 8,
-      alignSelf: 'stretch',
-      justifyContent: 'center',
-      paddingRight: 10,
-      paddingLeft: 10,
-    },
-    buttonText: {
-      fontSize: 18,
-      color: 'white',
-      alignSelf: 'center'
-    },
-  });
+
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    marginTop: 64,
+    alignItems: 'center',
+    backgroundColor: '#A1CCDD',
+  },
+  welcome: {
+    fontSize: 12,
+    textAlign: 'center',
+    marginTop: 20,
+    marginBottom: 20,
+  },
+  title: {
+    fontSize: 30,
+    fontFamily: 'Helvetica',
+    textAlign: 'center',
+    color: 'black',
+    marginBottom: 30
+  },
+  submit: {
+    alignSelf: 'center',
+    margin: 10,
+  },
+  placeARequestSwitch:
+  {
+    margin: 10,
+  },
+  altLocationTextInput: {
+    height: 40,
+    borderColor: 'gray',
+    width: 280,
+    flex: 1
+  },
+  venueInput: {
+    height: 40,
+    borderColor: 'gray',
+    width: 280,
+    flex: 1,
+    paddingLeft: 5,
+    marginTop: 10,
+    borderRadius: 8,
+    borderWidth: 1,
+    backgroundColor: 'white',
+  },
+  displayAltLocation: {
+    height: 40,
+    borderColor: 'gray',
+    width: 280,
+    flex: 1,
+    paddingLeft: 5,
+    borderRadius: 8,
+    borderWidth: 1,
+    backgroundColor: 'white',
+  },
+  button: {
+    height: 36,
+    flex: 1,
+    flexDirection: 'row',
+    backgroundColor: '#ff8000',
+    borderColor: '#ff8000',
+    borderWidth: 1,
+    borderRadius: 8,
+    alignSelf: 'stretch',
+    justifyContent: 'center',
+    paddingRight: 10,
+    paddingLeft: 10,
+  },
+  buttonText: {
+    fontSize: 18,
+    color: 'white',
+    alignSelf: 'center'
+  },
+  cancelText: {
+    color: 'red',
+    fontSize: 18,
+  },
+  cancelButton: {
+    position: 'relative',
+    left: 250,
+    bottom: 13,
+    padding: 10,
+  },
+});
 
 module.exports = PlaceARequest;

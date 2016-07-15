@@ -9,9 +9,9 @@ import {
   Image,
   TextInput,
   Switch,
+  Navigator
 } from 'react-native';
 import Icons from 'react-native-vector-icons';
-import YANavigator from 'react-native-ya-navigator';
 import ConfirmCheckIn from './ConfirmCheckIn';
 
 class StorkCheckIn extends React.Component {
