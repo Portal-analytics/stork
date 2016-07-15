@@ -42,6 +42,13 @@ class LoginPage extends React.Component {
 
   }
 
+   pushToHomePage(uid) {
+    LayoutAnimation.easeInEaseOut();
+    this.props.navigator.push({
+      id: 'HomePage',
+    });
+  }
+
   _handleChangePage() {
     const {email, password} = this.state
     this.setState({
@@ -60,7 +67,13 @@ class LoginPage extends React.Component {
     //   var errorMessage = error.message;
     //   alert(errorMessage);
     // });
-    firebase.auth().createUserWithEmailAndPassword(email, password).catch(function(error){
+    var _this = this;
+    firebase.auth().signInWithEmailAndPassword(email, password)
+    .then(function(user){
+          console.log(user);
+          _this.pushToHomePage(user.uid);
+        })
+    .catch(function(error){
       if(error){
         switch(error.code){
           case "auth/wrong-password":
@@ -77,15 +90,7 @@ class LoginPage extends React.Component {
       }
 
     });
-    LayoutAnimation.easeInEaseOut();
-    this.props.navigator.push({
-      id: 'HomePage',
-      props: {
-        email: this.state.email,
-        password: this.state.password,
-      }
-
-    });
+    
   }
 
 

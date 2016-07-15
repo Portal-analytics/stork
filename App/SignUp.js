@@ -47,8 +47,7 @@ class SignUp extends React.Component {
     });
   }
 
-  createUser(pushToFacebook) {
-    var createAccount = true;
+  createUser() {
     var _this = this;
     if (this.state.password === this.state.verifyPassword && this.state.firstName != '' && this.state.lastName != '' && this.state.phoneNumber != '' && this.state.email.slice(-3) === 'edu') {
       const {email, password} = this.state
@@ -61,13 +60,10 @@ class SignUp extends React.Component {
 
         firebase.auth().createUserWithEmailAndPassword(email, password)
         .then(function(user){
-          console.log(user);
           _this.pushToFacebook(user.uid);
         })
         .catch(function(error){
-          console.log(error);
           if(error){
-            console.log('error');
             createAccount=false;
             switch(error.code){
               case "auth/email-already-in-use":
@@ -84,7 +80,6 @@ class SignUp extends React.Component {
               
             }
           }
-          console.log(createAccount);
 
         });
       
@@ -163,7 +158,7 @@ class SignUp extends React.Component {
         <TextInput
         value={this.state.phoneNumber}
         onChangeText={(phoneNumber) => this.setState({ phoneNumber })}
-
+        keyboardType = 'numeric'
         ref='phoneNumberVal'
         style={styles.textEntry}
         placeholder = '(888)-888-8888'

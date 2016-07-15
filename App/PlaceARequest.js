@@ -10,8 +10,9 @@ import {
   Image,
   TextInput,
   Switch,
-  Navigator
+  Navigator,
 } from 'react-native';
+import dismissKeyboard from 'dismissKeyboard';
 import SearchingForStork from './SearchingForStork';
 import HomePage from './HomePage';
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -28,6 +29,7 @@ class PlaceARequest extends React.Component {
       venue: '',
       order: '',
       altLocation: '',
+      tip: '',
       user: firebase.auth().currentUser,
     };
 
@@ -49,6 +51,7 @@ class PlaceARequest extends React.Component {
       venue: this.state.venue,
       order: this.state.order,
       uid: this.state.user.uid,
+      tip: this.state.tip,
       altLocation: this.state.altLocation,
       status: 'waiting',
       complete: false,
@@ -57,6 +60,12 @@ class PlaceARequest extends React.Component {
     
     
   }
+
+  dismissOrderKeyboard() {
+    console.log('keyboard');
+    dismissKeyboard();
+  }
+
   switchTheWitch () {
     this.setState({
       switchIsOn: !this.state.switchIsOn,
@@ -93,52 +102,63 @@ class PlaceARequest extends React.Component {
     (<TextInput style={styles.displayAltLocation} placeholder='Alternative Location: eg. Rice 120'/>) : null;
 
     return (
-      <View
-        style={styles.container}
-        >
-      <View style={styles.submit}>
-      <TextInput
-      style={styles.venueInput}
-      ref = 'venue'
-      placeholder= 'Venue e.g. Chipotle, CVS, Clark Hall'
-      color = '#000000'
-      onChangeText={(venue) => this.setState({venue})}
-      value={this.state.venue}
-      />
-      </View>
-      <View style={{flexDirection: 'row'}}>
-      <Text style={styles.welcome}> Deliver to current address: </Text>
-      <Switch
-      style = {styles.placeARequestSwitch}
-      onValueChange={this.switchTheWitch.bind(this)}
-      value={this.state.switchIsOn}
-      />
-      </View>
-      <View style={styles.submit}>
-      {alt}
-      </View>
-      <TextInput
-      ref='alt location'
-      onChangeText={(altLocation) => this.setState({altLocation})}
-      value={this.state.altLocation}
-      style={this.displayAltLocation}
-      editable = {this.isEditable}
-      />
-      <View style={styles.submit}>
-      <TextInput
-      ref='order'
-      onChangeText={(order) => this.setState({order})}
-      value={this.state.order}
-      style={ { height: 300, borderColor: 'gray', width: 280, flex: 1, borderRadius: 8, borderWidth: 1, backgroundColor: 'white', paddingLeft: 5, fontSize: 16} }
-      multiline = {true}
-      placeholder = 'Order'
-      />
-      </View>
-      <View>
-      <TouchableHighlight style={styles.button} onPress={this.onSubmit.bind(this)}>
-      <Text style={styles.buttonText}> Stork it! </Text>
-      </TouchableHighlight>
-      </View>
+      <View style={styles.container}>
+        <View style={styles.submit}>
+          <TextInput
+          style={styles.venueInput}
+          ref = 'venue'
+          placeholder= 'Venue e.g. Chipotle, CVS, Clark Hall'
+          color = '#000000'
+          onChangeText={(venue) => this.setState({venue})}
+          value={this.state.venue}
+          />
+        </View>
+        <View style={{flexDirection: 'row'}}>
+          <Text style={styles.welcome}> Deliver to current address: </Text>
+          <Switch
+          style = {styles.placeARequestSwitch}
+          onValueChange={this.switchTheWitch.bind(this)}
+          value={this.state.switchIsOn}
+          />
+        </View>
+        <View style={styles.submit}>
+          {alt}
+        </View>
+        <TextInput
+        ref='alt location'
+        onChangeText={(altLocation) => this.setState({altLocation})}
+        value={this.state.altLocation}
+        style={this.displayAltLocation}
+        editable = {this.isEditable}
+        />
+        <View style={styles.submit}>
+          <TextInput
+          ref='order'
+          onChangeText={(order) => this.setState({order})}
+          value={this.state.order}
+          style={ { height: 300, borderColor: 'gray', width: 280, flex: 1, borderRadius: 8, borderWidth: 1, backgroundColor: 'white', paddingLeft: 5, fontSize: 16} }
+          multiline = {true}
+          placeholder = 'Order'
+          blurOnSubmit={true}
+          />
+          <View style={styles.tipContainer}>
+            <Text style={styles.tipText}>Tip:   $</Text>
+            <TextInput
+            style={styles.tipInput}
+            ref = 'tip'
+            placeholder= 'X'
+            color = '#000000'
+            onChangeText={(tip) => this.setState({tip})}
+            value={this.state.tip}
+            keyboardType='phone-pad'
+            />
+          </View>
+        </View>
+        <View>
+          <TouchableHighlight style={styles.button} onPress={this.onSubmit.bind(this)}>
+            <Text style={styles.buttonText}> Stork it! </Text>
+          </TouchableHighlight>
+        </View>
       </View>
     );
   }
@@ -228,6 +248,24 @@ const styles = StyleSheet.create({
     bottom: 13,
     padding: 10,
   },
+  tipContainer: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+  },
+  tipText:{
+    marginTop: 10,
+    fontSize: 24,
+  },
+  tipInput: {
+    height: 30,
+    borderColor: 'gray',
+    width: 32,
+    marginTop: 10,
+    borderRadius: 8,
+    borderWidth: 1,
+    backgroundColor: 'white',
+    paddingLeft: 10
+  }
 });
 
 module.exports = PlaceARequest;
