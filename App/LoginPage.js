@@ -15,7 +15,7 @@ import HomePage from './HomePage';
 import Icons from 'react-native-vector-icons';
 import YANavigator from 'react-native-ya-navigator';
 import StorkCheckIn from './StorkCheckIn';
-import FBSDK, {LoginButton, AccessToken} from 'react-native-fbsdk';
+import FBSDK, {LoginButton, AccessToken, GraphRequest, GraphRequestManager} from 'react-native-fbsdk';
 import firebase from 'firebase';
 
 var provider = new firebase.auth.FacebookAuthProvider(); //still need to integrate
@@ -38,7 +38,7 @@ class LoginPage extends React.Component {
     loaded: true,
     email: '',
     password: '',
-
+    profilePic: null,
   };
 }
 
@@ -100,7 +100,14 @@ class LoginPage extends React.Component {
     });
   }
 
-
+  _responseInfoCallback(error, result){
+    if(error){
+      alert('error ' + error.toString());
+    } else {
+      alert('Success ' + result.toString());
+      console.log(result);
+    }
+  }
 
   _handleChangePage() {
   const {email, password} = this.state
@@ -186,6 +193,26 @@ LayoutAnimation.easeInEaseOut();
                       for(var key in data){
                         console.log(key);
                       }
+                      console.log(data);
+                      console.log(data.accessToken.toString());
+
+                        const infoRequest = new GraphRequest(
+                          '/me',
+                          {
+                            parameters: {
+                              fields: {
+                                string: 'name,picture'
+                              },
+                              accessToken: {
+                                string: data.accessToken.toString()
+                              }
+                            }
+                          },
+                          this._responseInfoCallback
+                        );
+                        new GraphRequestManager().addRequest(infoRequest).start();
+
+
                       firebase.auth().signInWithCredential(data.accessToken.toString());
                     }
                   )
@@ -198,11 +225,7 @@ LayoutAnimation.easeInEaseOut();
     );
   }
 
-  static navigationDelegate = {
-    id: 'LoginPage',
-    navBarisHidden: true,
 
-  }
 }
 
 const styles = StyleSheet.create({

@@ -46,7 +46,12 @@ checkinsRef.on('value', (snap) => {
         _key: child.key,
       });
     });
-    console.log(this);
+    
+    for(var i = 0; i < recentCheckins.length; i++){
+      if(recentCheckins[i].active == false){
+        recentCheckins.splice(i, 1);
+      }
+    }
     this.setState({
       dataSource: this.state.dataSource.cloneWithRows(recentCheckins)
     });

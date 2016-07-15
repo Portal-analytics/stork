@@ -34,10 +34,16 @@ import Logo7 from '../logos/logo7.png';
 var days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 
 class Deals extends React.Component {
-  
+
   constructor(props) {
   super(props);
   var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+  var vendorsRef = firebase.database().ref('vendors/');
+  var newVendor = vendorsRef.push({
+    location: '1505 University Ave',
+    venue: 'trinity',
+    deals: '$3 burgers',
+  });
   var deals = [
       {
         store: 'Roots',

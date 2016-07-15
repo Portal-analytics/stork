@@ -44,7 +44,6 @@ class StorkCheckIn extends React.Component {
 
      });
      var checkinKey = newCheckin.key;
-     console.log('the checkin key is ' + checkinKey);
     this.props.goToConfirmCheckIn(checkinKey);
 
   }
