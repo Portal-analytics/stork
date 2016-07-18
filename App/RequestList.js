@@ -64,7 +64,7 @@ class RequestList extends React.Component {
       key={`${sectionID}-${rowID}`}
       style= {{
         height: adjacentRowHighlighted ? 4 : 1,
-        backgroundColor: adjacentRowHighlighted ? '#3B5998' : '#CCCCCC'
+        backgroundColor: adjacentRowHighlighted ? '#3B5998' : 'black'
       }}
       />
     );
@@ -73,9 +73,9 @@ class RequestList extends React.Component {
   getAvailableRequests(index){
     return(
       <View style={styles.spacer}>
-      
+
       <Text style={styles.menuItems}>
-      {index.order}
+      {index.venue}
       </Text>
       </View>
     )
@@ -138,7 +138,7 @@ const styles = StyleSheet.create({
   menuItems: {
     fontSize: 25,
     fontFamily: 'Helvetica',
-    color: 'white',
+    color: 'black',
     paddingTop: 15,
     paddingBottom: 15,
     marginLeft: 5,
@@ -165,6 +165,8 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   spacer: {
+    height: 65,
+    width: 374,
     paddingTop: 5,
     paddingBottom: 5,
   },

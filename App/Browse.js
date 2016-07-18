@@ -46,7 +46,7 @@ checkinsRef.on('value', (snap) => {
         _key: child.key,
       });
     });
-    
+
     for(var i = 0; i < recentCheckins.length; i++){
       if(recentCheckins[i].active == false){
         recentCheckins.splice(i, 1);
@@ -68,7 +68,7 @@ _renderSeperator(sectionID: number, rowID: number, adjacentRowHighlighted: bool)
     key={`${sectionID}-${rowID}`}
     style={{
       height: adjacentRowHighlighted ? 4 : 1,
-      backgroundColor: adjacentRowHighlighted ? '#3B5998' : '#CCCCCC',
+      backgroundColor: adjacentRowHighlighted ? '#3B5998' : 'black',
     }}
     />
   );
@@ -145,7 +145,7 @@ const styles = StyleSheet.create({
   menuItems: {
     fontSize: 25,
     fontFamily: 'Helvetica',
-    color: 'white',
+    color: 'black',
     paddingTop: 15,
     paddingBottom: 15,
     marginLeft: 5,
@@ -172,6 +172,8 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   spacer: {
+    height: 65,
+    width: 374,
     paddingTop: 5,
     paddingBottom: 5,
   },
