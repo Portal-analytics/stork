@@ -26,6 +26,7 @@ class StorkCheckIn extends React.Component {
       isAtDestination: true,
       eta: '',
       user: firebase.auth().currentUser,
+      submissionLoc: '',
     };
   }
 

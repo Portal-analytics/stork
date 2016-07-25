@@ -34,14 +34,17 @@ class VenueRequests extends React.Component {
     requestRef.on('value', (snap) => {
       var recentRequests = [];
       snap.forEach((child) => {
-        recentRequests.push({
-          altLocation: child.val().altLocation,
-          complete: child.val().complete,
-          order: child.val().order,
-          status: child.val().status,
-          uid: child.val().uid,
-          venue: child.val().venue,
-        });
+        if(this.place === child.val().venue){
+          recentRequests.push({
+            altLocation: child.val().altLocation,
+            complete: child.val().complete,
+            order: child.val().order,
+            status: child.val().status,
+            uid: child.val().uid,
+            venue: child.val().venue,
+          });
+        }
+
       });
       this.setState({
         dataSource: this.state.dataSource.cloneWithRows(recentRequests)
@@ -70,8 +73,8 @@ class VenueRequests extends React.Component {
   getAvailableRequests(index){
     return(
       <View style={styles.spacer}>
-      <TouchableHighlight onPress=this.goToVenue >
-      <Text style={styles.menuItems}>{index.venue}</Text>
+      <TouchableHighlight onPress={this.goToVenue} >
+      <Text style={styles.menuItems}>{index.order}</Text>
       </TouchableHighlight>
       </View>
     )

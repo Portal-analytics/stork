@@ -59,7 +59,7 @@ class LoginPage extends React.Component {
     var _this = this;
     firebase.auth().signInWithEmailAndPassword(email, password)
     .then(function(user){
-          console.log(user);
+          
           _this.pushToHomePage(user.uid);
         })
     .catch(function(error){

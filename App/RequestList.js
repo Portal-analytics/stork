@@ -15,14 +15,17 @@ import {
   ListView,
   ScrollView,
   SegmentedControlIOS,
+  Modal,
 } from 'react-native';
-
+import VenueRequests from './VenueRequests';
 class RequestList extends React.Component {
   constructor(props){
     super(props);
     this.state = {
       dataSource: new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2}),
+      orderModalVisible: false,
     }
+
     // var sorter = '';
     // if(this.props.sortBy === '$$$'){
     //   sorter = 'orderByChild(venue)'
@@ -50,7 +53,7 @@ class RequestList extends React.Component {
           // change to vendor fields
           // name
           // # active checkins
-          // location? 
+          // location?
         });
       });
       this.setState({
@@ -58,6 +61,7 @@ class RequestList extends React.Component {
       });
     });
   }
+
   componentDidMount(){
     this.listenForRequests(this.vendorsRef);
   }
@@ -77,13 +81,31 @@ class RequestList extends React.Component {
   getAvailableRequests(index){
     return(
       <View style={styles.spacer}>
-      <TouchableHighlight onPress >
+      <TouchableHighlight onPress={this.openRequestModal.bind(this)} place={index.venue}>
       <Text style={styles.menuItems}>{index.venue}</Text>
       </TouchableHighlight>
       </View>
     )
   }
+
+  openRequestModal(){
+    this.setState({
+      orderModalVisible: true,
+    });
+  }
+  closeOrderModal() {
+    this.setState({
+      orderModalVisible: false,
+    });
+  }
+  pushToOrderAccepted(){
+    this.props.navigator.push({
+      id: 'OrderAccepted'
+    })
+  }
+
   render() {
+    console.log(this.state.orderModalVisible);
     return(
       <View style={styles.container}>
       <ScrollView>
@@ -93,7 +115,16 @@ class RequestList extends React.Component {
       renderSeparator={this._renderSeperator}
       renderRow={(rowData) => this.getAvailableRequests(rowData)}
       >
+
       </ListView>
+      <Modal
+        animationType={'slide'}
+        transparent={false}
+        visible={this.state.orderModalVisible}
+        >
+        
+        <VenueRequests pushToOrderAccepted={this.pushToOrderAccepted} closeRequestModal={this.closeOrderModal}/>
+      </Modal>
       </ScrollView>
       </View>
     )

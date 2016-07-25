@@ -40,6 +40,20 @@ class Browse extends React.Component {
   }
 
 listenForStorks(checkinsRef){
+//need vendor ref
+//vendorsRef.on('value', (snap) =>{
+//var recentCheckinVenues = [];
+// snap.forEach((child) => {
+//   if(child.val().checkInCount > 0){
+//     recentCheckinVenues.push({
+//       venue: child.val().venue,
+//       checkInCount: child.val().checkInCount,
+//     })
+//   }
+//
+// })
+// })
+
 checkinsRef.on('value', (snap) => {
     var recentCheckins = [];
     snap.forEach((child) => {
@@ -48,6 +62,7 @@ checkinsRef.on('value', (snap) => {
         destination: child.val().destination,
         uid: child.val().uid,
         _key: child.key,
+
       });
     });
 
@@ -110,7 +125,7 @@ closeOrderModal() {
   }
 
   render() {
-    console.log('render');
+
 
     return (
       <View style={styles.container}>
