@@ -17,27 +17,21 @@ import {
   SegmentedControlIOS,
 } from 'react-native';
 
-class RequestList extends React.Component {
+class VenueRequests extends React.Component {
   constructor(props){
     super(props);
     this.state = {
       dataSource: new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2}),
     }
-    // var sorter = '';
-    // if(this.props.sortBy === '$$$'){
-    //   sorter = 'orderByChild(venue)'
-    // }
-    this.vendorsRef = firebase.database().ref('vendors/');
+    this.requestRef = firebase.database().ref('requests/');
   }
-
-
 
   getRef() {
     return firebase.database().ref();
   }
 
-  listenForRequests(vendorsRef){
-    vendorsRef.on('value', (snap) => {
+  listenForRequests(requestRef){
+    requestRef.on('value', (snap) => {
       var recentRequests = [];
       snap.forEach((child) => {
         recentRequests.push({
@@ -47,10 +41,6 @@ class RequestList extends React.Component {
           status: child.val().status,
           uid: child.val().uid,
           venue: child.val().venue,
-          // change to vendor fields
-          // name
-          // # active checkins
-          // location? 
         });
       });
       this.setState({
@@ -59,7 +49,7 @@ class RequestList extends React.Component {
     });
   }
   componentDidMount(){
-    this.listenForRequests(this.vendorsRef);
+    this.listenForRequests(this.requestRef);
   }
 
   _renderSeperator(sectionID: number, rowID: number, adjacentRowHighlighted: bool){
@@ -73,11 +63,14 @@ class RequestList extends React.Component {
       />
     );
   }
+  goToVenueRequests() {
+
+  }
 
   getAvailableRequests(index){
     return(
       <View style={styles.spacer}>
-      <TouchableHighlight onPress >
+      <TouchableHighlight onPress=this.goToVenue >
       <Text style={styles.menuItems}>{index.venue}</Text>
       </TouchableHighlight>
       </View>
@@ -175,4 +168,4 @@ const styles = StyleSheet.create({
   },
 });
 
-module.exports = RequestList;
+module.exports = VenueRequests;

@@ -57,12 +57,12 @@ class PlaceARequest extends React.Component {
       complete: false,
     });
 
-    
-    
+
+
   }
 
   dismissOrderKeyboard() {
-    console.log('keyboard');
+  
     dismissKeyboard();
   }
 
@@ -79,7 +79,7 @@ class PlaceARequest extends React.Component {
           renderScene={this.renderScene.bind(this)}
           navigator={this.props.navigator}
           navigationBar={
-            <Navigator.NavigationBar 
+            <Navigator.NavigationBar
               style={{backgroundColor: 'white'}}
                 routeMapper={{
                   LeftButton: (route, navigator, index, navState) =>

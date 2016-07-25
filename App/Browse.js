@@ -15,8 +15,10 @@ import {
   StatusBar,
   ListView,
   ScrollView,
+  Modal,
   SegmentedControlIOS,
 } from 'react-native';
+import PlaceARequest from './PlaceARequest';
 
 class Browse extends React.Component {
 
@@ -26,9 +28,11 @@ class Browse extends React.Component {
 
     this.state = {
       dataSource: new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2}),
-
+      orderModalVisible: false,
     }
     this.checkinsRef = firebase.database().ref('checkins/');
+    this.pushToSearchingForStork=this.pushToSearchingForStork.bind(this);
+    this.closeOrderModal=this.closeOrderModal.bind(this);
   }
 
   getRef() {
@@ -58,7 +62,7 @@ checkinsRef.on('value', (snap) => {
   });
 }
   componentDidMount(){
-    console.log(this);
+
     this.listenForStorks(this.checkinsRef);
   }
 
@@ -74,10 +78,32 @@ _renderSeperator(sectionID: number, rowID: number, adjacentRowHighlighted: bool)
   );
 }
 
+closeOrderModal() {
+  this.setState({
+    orderModalVisible: false,
+  });
+}
+  openOrderModal(){
+    this.setState({
+
+      orderModalVisible: !this.state.orderModalVisible,
+    })
+  }
+
+  pushToSearchingForStork() {
+    this.props.navigator.push({
+      id: 'SearchingForStork',
+    });
+  }
+
+
   getAvailableStorks(index) {
+
     return(
       <View style={styles.spacer}>
+      <TouchableHighlight onPress={this.openOrderModal.bind(this)}>
       <Text style={styles.menuItems}> {index.destination} </Text>
+      </TouchableHighlight>
       </View>
     )
     //pulls available stork info from firebase and returns a list view
@@ -97,7 +123,13 @@ _renderSeperator(sectionID: number, rowID: number, adjacentRowHighlighted: bool)
         >
         </ListView>
         </ScrollView>
-
+        <Modal
+          animationType={'slide'}
+          transparent={false}
+          visible={this.state.orderModalVisible}
+          >
+          <PlaceARequest pushToSearchingForStork={this.pushToSearchingForStork} closeOrderModal={this.closeOrderModal}/>
+        </Modal>
       </View>
       )
   }

@@ -155,9 +155,7 @@ class Homepage extends React.Component {
       checkedInValue: 'Check Out',
       checkinKey: checkinKey,
     });
-    console.log(this.props.checkinKey);
-    console.log(this.state.checkinKey);
-    console.log(checkinKey);
+    
   }
 
   goToConfirmCheckOut(checkinKey) {
@@ -170,8 +168,8 @@ class Homepage extends React.Component {
       checkedInValue: 'Check-In',
       checkinKey: this.state.checkinKey,
     });
-    console.log('check' + checkinKey);
-    console.log('pls help' + this.state.checkinKey);
+
+
 
   }
 
@@ -217,7 +215,7 @@ class Homepage extends React.Component {
           configureScene={(route, navigator) =>
             Navigator.SceneConfigs.FloatFromRight}
           navigationBar={
-            <Navigator.NavigationBar 
+            <Navigator.NavigationBar
               style={{backgroundColor: '#A1CCDD'}}
                 routeMapper={{
                   LeftButton: (route, navigator, index, navState) =>
