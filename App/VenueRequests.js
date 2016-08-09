@@ -14,12 +14,17 @@ import {
   StatusBar,
   ListView,
   ScrollView,
+  TouchableOpacity,
   SegmentedControlIOS,
+  Navigator,
 } from 'react-native';
+import Icons from 'react-native-vector-icons';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 class VenueRequests extends React.Component {
   constructor(props){
     super(props);
+    //prop = venue param
     this.state = {
       dataSource: new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2}),
     }
@@ -31,7 +36,9 @@ class VenueRequests extends React.Component {
   }
 
   listenForRequests(requestRef){
-    requestRef.on('value', (snap) => {
+    //firebase.database().ref('requests/').orderByChild('venue').equalTo(this.props.venue)
+    
+    firebase.database().ref('requests/').on('value', (snap) => {
       var recentRequests = [];
       snap.forEach((child) => {
         if(this.place === child.val().venue){
@@ -66,22 +73,64 @@ class VenueRequests extends React.Component {
       />
     );
   }
-  goToVenueRequests() {
 
-  }
 
   getAvailableRequests(index){
     return(
       <View style={styles.spacer}>
-      <TouchableHighlight onPress={this.goToVenue} >
+      <TouchableHighlight onPress={this.openOrderModal} >
       <Text style={styles.menuItems}>{index.order}</Text>
       </TouchableHighlight>
       </View>
     )
   }
+
+  closeOrderModal() {
+    this.setState({
+      orderModalVisible: false,
+    });
+  }
+
+  openOrderModal() {
+    this.setState({
+      orderModalVisible: true,
+    });
+    //open a PlaceARequest modal, with props of whatever selected tab and
+    // contentEditable === false
+  }
+
+  onOrderAccepted() {
+    //goToTracking
+  }
+
   render() {
+    return (
+      <Navigator
+          renderScene={this.renderScene.bind(this)}
+          navigator={this.props.navigator}
+          navigationBar={
+            <Navigator.NavigationBar
+              style={{backgroundColor: 'white'}}
+                routeMapper={{
+                  LeftButton: (route, navigator, index, navState) =>
+                    {return (<View/>);},
+                  RightButton: (route, navigator, index, navState) =>
+                    { return (<View style={{flexDirection: 'row'}}>
+                                <TouchableOpacity onPress={this.closeRequestModal}>
+                                  <Icon  style={{fontSize: 36, marginRight: 10, marginTop: 2,}} name="close" color={'red'}/>
+                                </TouchableOpacity>
+                              </View>);},
+                  Title: (route, navigator, index, navState) =>
+                    { return (<View><Text style={styles.title}>Venue Requests</Text></View>);},
+                }} />
+          } />
+    );
+  }
+
+  renderScene() {
     return(
       <View style={styles.container}>
+      <Text> Fuck w/ me u kno i got it </Text>
       <ScrollView>
       <ListView
       style={styles.picContainer}

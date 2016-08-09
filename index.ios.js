@@ -19,6 +19,8 @@ import SearchingForStork from './App/SearchingForStork';
 import SignUp from './App/SignUp';
 import Settings from './App/Settings';
 import FacebookLogin from './App/FacebookLogin';
+import RequestList from './App/RequestList';
+import VenueRequests from './App/VenueRequests';
 import Icons from 'react-native-vector-icons';
 import firebase from 'firebase';
 
@@ -102,6 +104,21 @@ renderScene(route, nav) {
           {...route.passProps} />
         )
     }
+    if(routeID === 'VenueRequests') {
+      return (
+        <VenueRequests
+          navigator={nav}
+           />
+        )
+    }
+    if(routeID === 'RequestList') {
+      return (
+        <RequestList
+          navigator={nav}
+          />
+      );
+    }
+
     return this.noRoute(nav);
   }
 

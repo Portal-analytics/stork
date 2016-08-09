@@ -36,8 +36,8 @@ class SignUp extends React.Component {
 
   pushtoHomePage(uid) {
     var database = firebase.database();
-    var usersRef = database.ref('users/')
-    usersRef.push({
+    var usersRef = database.ref('users/' + uid)
+    usersRef.set({
       firstName: this.state.firstName,
       lastName: this.state.lastName,
       email: this.state.email,

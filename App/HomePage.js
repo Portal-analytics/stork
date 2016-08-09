@@ -32,6 +32,7 @@ import ConfirmCheckOut from './ConfirmCheckOut';
 import StorkCheckOut from './StorkCheckOut';
 import Settings from './Settings';
 import RequestList from './RequestList';
+import VenueRequests from './VenueRequests';
 import Browse from './Browse';
 import Logo from '../storklogo.jpg';
 
@@ -57,9 +58,11 @@ class Homepage extends React.Component {
   };
   this.goToConfirmCheckIn=this.goToConfirmCheckIn.bind(this);
   this.goToConfirmCheckOut=this.goToConfirmCheckOut.bind(this);
+  this.goToVenueRequests=this.goToVenueRequests.bind(this);
   this.pushToSearchingForStork=this.pushToSearchingForStork.bind(this);
   this.closeOrderModal=this.closeOrderModal.bind(this);
   this.closeSettingsModal=this.closeSettingsModal.bind(this);
+  this.goToVenueRequests=this.goToVenueRequests.bind(this);
 }
 
   //Changes the scene based on which tab is pressed in the segment control for the Order Tab
@@ -90,13 +93,13 @@ class Homepage extends React.Component {
     if (this.state.currentDeliverComponent === 'New') {
       return(
         <ScrollView style={styles.scrollContainer}>
-          <RequestList sortBy={this.state.currentDeliverComponent} />
+          <RequestList goToVenueRequests={this.goToVenueRequests}/>
         </ScrollView>
         )
     } else if (this.state.currentDeliverComponent === '$$$') {
       return (
         <ScrollView style={styles.scrollContainer}>
-          <RequestList sortBy={this.state.currentDeliverComponent}/>
+          <RequestList goToVenueRequests={this.goToVenueRequests}/>
         </ScrollView>
         )
     } else if (this.state.currentDeliverComponent === 'Check-In') {
@@ -155,7 +158,7 @@ class Homepage extends React.Component {
       checkedInValue: 'Check Out',
       checkinKey: checkinKey,
     });
-    
+
   }
 
   goToConfirmCheckOut(checkinKey) {
@@ -168,9 +171,6 @@ class Homepage extends React.Component {
       checkedInValue: 'Check-In',
       checkinKey: this.state.checkinKey,
     });
-
-
-
   }
 
   showPlaceARequestModal() {
@@ -179,6 +179,14 @@ class Homepage extends React.Component {
         orderModalVisible: true,
       });
     }
+  }
+
+  goToVenueRequests() {
+    console.log('hit in homepage');
+    this.props.navigator.push({
+      id: 'VenueRequests',
+    });
+
   }
 
   closeOrderModal() {

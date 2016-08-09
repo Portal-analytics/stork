@@ -16,21 +16,27 @@ import {
   ScrollView,
   SegmentedControlIOS,
   Modal,
+  Navigator,
 } from 'react-native';
 import VenueRequests from './VenueRequests';
+import Icons from 'react-native-vector-icons';
+
 class RequestList extends React.Component {
   constructor(props){
     super(props);
     this.state = {
       dataSource: new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2}),
-      orderModalVisible: false,
+      requestModalVisible: false,
+      place: '',
     }
 
     // var sorter = '';
     // if(this.props.sortBy === '$$$'){
     //   sorter = 'orderByChild(venue)'
     // }
+
     this.vendorsRef = firebase.database().ref('vendors/');
+
   }
 
 
@@ -78,10 +84,11 @@ class RequestList extends React.Component {
     );
   }
 
+
   getAvailableRequests(index){
     return(
       <View style={styles.spacer}>
-      <TouchableHighlight onPress={this.openRequestModal.bind(this)} place={index.venue}>
+      <TouchableHighlight onPress={this.props.goToVenueRequests.bind(this)} placeSelected={index.venue}>
       <Text style={styles.menuItems}>{index.venue}</Text>
       </TouchableHighlight>
       </View>
@@ -89,13 +96,15 @@ class RequestList extends React.Component {
   }
 
   openRequestModal(){
+
     this.setState({
-      orderModalVisible: true,
+      place: this.placeSelected,
+      requestModalVisible: true,
     });
   }
-  closeOrderModal() {
+  closeRequestModal() {
     this.setState({
-      orderModalVisible: false,
+      requestModalVisible: false,
     });
   }
   pushToOrderAccepted(){
@@ -105,7 +114,7 @@ class RequestList extends React.Component {
   }
 
   render() {
-    console.log(this.state.orderModalVisible);
+
     return(
       <View style={styles.container}>
       <ScrollView>
@@ -117,14 +126,7 @@ class RequestList extends React.Component {
       >
 
       </ListView>
-      <Modal
-        animationType={'slide'}
-        transparent={false}
-        visible={this.state.orderModalVisible}
-        >
-        
-        <VenueRequests pushToOrderAccepted={this.pushToOrderAccepted} closeRequestModal={this.closeOrderModal}/>
-      </Modal>
+
       </ScrollView>
       </View>
     )

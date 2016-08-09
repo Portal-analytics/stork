@@ -27,6 +27,8 @@ class StorkCheckIn extends React.Component {
       eta: '',
       user: firebase.auth().currentUser,
       submissionLoc: '',
+      currentLat: 0,
+      currentLong: 0,
     };
   }
 
@@ -37,18 +39,36 @@ class StorkCheckIn extends React.Component {
   }
 
   submitCheckIn () {
-
+    var tryLat = 0;
+    var tryLong = 0;
     let destination = this.state.destination;
+    navigator.geolocation.getCurrentPosition(
+    (position) =>{
 
-    var newCheckin = this.state.checkinsRef.push({
-      destination: this.state.destination,
-      uid: this.state.user.uid,
-      eta: this.state.eta,
-      active: true,
+      var newCheckin = this.state.checkinsRef.push({
+        destination: this.state.destination,
+        uid: this.state.user.uid,
+        eta: this.state.eta,
+        active: true,
+        currentLat: position.coords.latitude,
+        currentLong: position.coords.longitude,
 
-     });
-     var checkinKey = newCheckin.key;
-    this.props.goToConfirmCheckIn(checkinKey);
+       });
+
+    },
+    (error) => alert(error.message),
+    {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000}
+  );
+
+    // this.setState({
+    //   currentLat: tryLat,
+    //   currentLong: tryLong,
+    // })
+    // console.log('this.state.currentLong is ' + this.state.currentLong)
+    //
+    // var checkinKey = newCheckin.key;
+    // pass the checkin Key to the method below v
+    this.props.goToConfirmCheckIn();
 
   }
 
