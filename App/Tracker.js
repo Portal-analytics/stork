@@ -17,6 +17,7 @@ import {
   TabBarIOS,
 } from 'react-native';
 import MapView from 'react-native-maps';
+import HomePage from './HomePage'
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 class Tracker extends React.Component {
@@ -45,6 +46,10 @@ class Tracker extends React.Component {
       ],
     }
   }
+  goBack() {
+  console.log(this)
+  }
+
   render () {
     return (
       <View
@@ -61,6 +66,7 @@ class Tracker extends React.Component {
         showsUserLocation={true}
         followsUserLocation={true} //switch to true when not in simulator
         >
+
         {this.state.markers.map(marker => (
           <MapView.Marker
           coordinate={marker.latlng}
@@ -69,7 +75,12 @@ class Tracker extends React.Component {
           />
         ))}
           </MapView>
-
+          <TouchableOpacity
+          style={styles.back}
+          onPress={this.goBack}
+          >
+          <Text style={{fontWeight: 'bold', fontSize: 30}}>&larr;</Text>
+          </TouchableOpacity>
       </View>
   );
   }
@@ -100,7 +111,7 @@ const styles = StyleSheet.create({
       position: 'absolute',
       top: 20,
       left: 12,
-      backgroundColor: 'rgba(255,255,255,0.8)',
+      backgroundColor: 'rgba(255,255,255,0.4)',
       padding: 12,
       borderRadius: 20,
       width: 80,

@@ -17,16 +17,23 @@ import {
   TouchableOpacity,
   SegmentedControlIOS,
   Navigator,
+  Modal,
 } from 'react-native';
 import Icons from 'react-native-vector-icons';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import PlaceARequest from './PlaceARequest';
+import AcceptARequest from './AcceptARequest';
 
 class VenueRequests extends React.Component {
   constructor(props){
     super(props);
+
     //prop = venue param
     this.state = {
       dataSource: new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2}),
+      orderModalVisible: false,
+      title: this.props.placeSelected,
+      order: {},
     }
     this.requestRef = firebase.database().ref('requests/');
   }
@@ -36,13 +43,14 @@ class VenueRequests extends React.Component {
   }
 
   listenForRequests(requestRef){
-    //firebase.database().ref('requests/').orderByChild('venue').equalTo(this.props.venue)
-    
-    firebase.database().ref('requests/').on('value', (snap) => {
-      var recentRequests = [];
+    var venue = 'Trin';
+    var recentVenueRequests = [];
+    var requestRef = firebase.database().ref('requests/');
+    requestRef.on('value', (snap) => {
+
       snap.forEach((child) => {
-        if(this.place === child.val().venue){
-          recentRequests.push({
+        if(child.val().venue.toLowerCase() === venue.toLowerCase()){
+          recentVenueRequests.push({
             altLocation: child.val().altLocation,
             complete: child.val().complete,
             order: child.val().order,
@@ -51,13 +59,14 @@ class VenueRequests extends React.Component {
             venue: child.val().venue,
           });
         }
-
       });
       this.setState({
-        dataSource: this.state.dataSource.cloneWithRows(recentRequests)
+        dataSource: this.state.dataSource.cloneWithRows(recentVenueRequests)
       });
-    });
-  }
+  });
+
+}
+
   componentDidMount(){
     this.listenForRequests(this.requestRef);
   }
@@ -74,13 +83,22 @@ class VenueRequests extends React.Component {
     );
   }
 
+  figureOutWhatTheFuckIsGoingOn() {
+    console.log('FUCK');
+    console.log(this.index);
+    this.openOrderModal();
+  }
+
 
   getAvailableRequests(index){
+
     return(
       <View style={styles.spacer}>
-      <TouchableHighlight onPress={this.openOrderModal} >
+
+      <TouchableHighlight onPress={this.figureOutWhatTheFuckIsGoingOn.bind(this)}>
       <Text style={styles.menuItems}>{index.order}</Text>
       </TouchableHighlight>
+
       </View>
     )
   }
@@ -92,6 +110,7 @@ class VenueRequests extends React.Component {
   }
 
   openOrderModal() {
+    console.log('youre a pussy')
     this.setState({
       orderModalVisible: true,
     });
@@ -99,11 +118,21 @@ class VenueRequests extends React.Component {
     // contentEditable === false
   }
 
+  backToRequestList(){
+    this.props.navigator.pop();
+  }
+
   onOrderAccepted() {
-    //goToTracking
+    this.setState({
+      orderModalVisible: false,
+    })
+    this.props.navigator.push({
+      id: 'Tracker',
+    });
   }
 
   render() {
+
     return (
       <Navigator
           renderScene={this.renderScene.bind(this)}
@@ -116,21 +145,22 @@ class VenueRequests extends React.Component {
                     {return (<View/>);},
                   RightButton: (route, navigator, index, navState) =>
                     { return (<View style={{flexDirection: 'row'}}>
-                                <TouchableOpacity onPress={this.closeRequestModal}>
+                                <TouchableOpacity onPress={this.backToRequestList.bind(this)}>
                                   <Icon  style={{fontSize: 36, marginRight: 10, marginTop: 2,}} name="close" color={'red'}/>
                                 </TouchableOpacity>
                               </View>);},
                   Title: (route, navigator, index, navState) =>
-                    { return (<View><Text style={styles.title}>Venue Requests</Text></View>);},
+                    { return (<View><Text style={styles.title}>{this.state.title}</Text></View>);},
                 }} />
           } />
     );
   }
 
   renderScene() {
+
     return(
       <View style={styles.container}>
-      <Text> Fuck w/ me u kno i got it </Text>
+
       <ScrollView>
       <ListView
       style={styles.picContainer}
@@ -140,6 +170,13 @@ class VenueRequests extends React.Component {
       >
       </ListView>
       </ScrollView>
+      <Modal
+        animationType={'slide'}
+        transparent={false}
+        visible={this.state.orderModalVisible}
+        >
+        <AcceptARequest  closeOrderModal={this.closeOrderModal.bind(this)} onOrderAccepted={this.onOrderAccepted.bind(this)}/>
+      </Modal>
       </View>
     )
   }
@@ -153,10 +190,15 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
     flexWrap: 'wrap',
+    marginTop: 50,
   },
   navBar: {
     flex: 1,
     backgroundColor: '#A1CCDD',
+  },
+  navBarSpacing: {
+    flex: 1,
+    marginTop: 1,
   },
   storeText: {
     fontSize: 32,

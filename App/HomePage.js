@@ -25,6 +25,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import StorkCheckIn from './StorkCheckIn';
 import SearchingForStork from './SearchingForStork';
 import Deals from './Deals';
+import Tracker from './Tracker';
 import PlaceARequest from './PlaceARequest';
 import MapViewz from './MapViewz';
 import ConfirmCheckIn from './ConfirmCheckIn';
@@ -63,6 +64,7 @@ class Homepage extends React.Component {
   this.closeOrderModal=this.closeOrderModal.bind(this);
   this.closeSettingsModal=this.closeSettingsModal.bind(this);
   this.goToVenueRequests=this.goToVenueRequests.bind(this);
+  this.goToTracker=this.goToTracker.bind(this);
 }
 
   //Changes the scene based on which tab is pressed in the segment control for the Order Tab
@@ -182,11 +184,21 @@ class Homepage extends React.Component {
   }
 
   goToVenueRequests() {
-    console.log('hit in homepage');
+    console.log(this.props);
+    console.log('props of homepage ' + this.props.placeSelected);
     this.props.navigator.push({
       id: 'VenueRequests',
+      passProps:{
+        placeSelected: this.props.placeSelected,
+      }
     });
 
+  }
+
+  goToTracker() {
+    this.props.navigator.push({
+      id: 'Tracker',
+    });
   }
 
   closeOrderModal() {

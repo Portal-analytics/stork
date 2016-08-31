@@ -29,8 +29,8 @@ class LoginPage extends React.Component {
   super(props);
   this.state = {
     loaded: true,
-    email: '',
-    password: '',
+    email: 'ark6gf@virginia.edu', //switch to empty quotes
+    password: 'ark994113', //switch to empty quotes
     profilePic: null,
   };
 }
@@ -59,7 +59,7 @@ class LoginPage extends React.Component {
     var _this = this;
     firebase.auth().signInWithEmailAndPassword(email, password)
     .then(function(user){
-          
+
           _this.pushToHomePage(user.uid);
         })
     .catch(function(error){

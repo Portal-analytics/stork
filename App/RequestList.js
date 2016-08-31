@@ -86,9 +86,10 @@ class RequestList extends React.Component {
 
 
   getAvailableRequests(index){
+    var indexVenue = index.venue;
     return(
       <View style={styles.spacer}>
-      <TouchableHighlight onPress={this.props.goToVenueRequests.bind(this)} placeSelected={index.venue}>
+      <TouchableHighlight onPress={this.props.goToVenueRequests.bind(this)}>
       <Text style={styles.menuItems}>{index.venue}</Text>
       </TouchableHighlight>
       </View>

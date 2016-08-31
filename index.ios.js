@@ -21,6 +21,7 @@ import Settings from './App/Settings';
 import FacebookLogin from './App/FacebookLogin';
 import RequestList from './App/RequestList';
 import VenueRequests from './App/VenueRequests';
+import Tracker from './App/Tracker';
 import Icons from 'react-native-vector-icons';
 import firebase from 'firebase';
 
@@ -108,13 +109,23 @@ renderScene(route, nav) {
       return (
         <VenueRequests
           navigator={nav}
+          {...route.passProps}
            />
         )
+    }
+    if(routeID === 'Tracker'){
+      return (
+        <Tracker
+        navigator={nav}
+        {...route.passProps}
+        />
+      )
     }
     if(routeID === 'RequestList') {
       return (
         <RequestList
           navigator={nav}
+          {...route.passProps}
           />
       );
     }
