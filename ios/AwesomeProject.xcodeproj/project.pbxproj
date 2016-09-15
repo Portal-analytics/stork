@@ -42,6 +42,7 @@
 		BDD9E0B61D21BFEC008A9B38 /* Zocial.ttf in Resources */ = {isa = PBXBuildFile; fileRef = BDD9E0AE1D21BFEC008A9B38 /* Zocial.ttf */; };
 		C8DE061CF7174B84A2E4A1AB /* libRNSpinkit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7C0895F5FE94439BB3E5F7DD /* libRNSpinkit.a */; };
 		E107728E5DBE4093867BB963 /* Entypo.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5A6D4CC7A22D4805A6FE7AC3 /* Entypo.ttf */; };
+		EB0CEA1B1D8B0BE20009BF35 /* Bolts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EB0CEA1A1D8B0BE20009BF35 /* Bolts.framework */; };
 		EBBF85201D26CEE6002C031D /* FBSDKCoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EBBF851F1D26CEE6002C031D /* FBSDKCoreKit.framework */; };
 		EBBF85231D26CF76002C031D /* FBSDKLoginKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EBBF85221D26CF76002C031D /* FBSDKLoginKit.framework */; };
 		EBBF85251D26CF80002C031D /* FBSDKShareKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EBBF85241D26CF80002C031D /* FBSDKShareKit.framework */; };
@@ -202,6 +203,7 @@
 		BDD9E0AC1D21BFEC008A9B38 /* MaterialIcons.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = MaterialIcons.ttf; sourceTree = "<group>"; };
 		BDD9E0AD1D21BFEC008A9B38 /* Octicons.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Octicons.ttf; sourceTree = "<group>"; };
 		BDD9E0AE1D21BFEC008A9B38 /* Zocial.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Zocial.ttf; sourceTree = "<group>"; };
+		EB0CEA1A1D8B0BE20009BF35 /* Bolts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Bolts.framework; sourceTree = "<group>"; };
 		EBBF851F1D26CEE6002C031D /* FBSDKCoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKCoreKit.framework; path = AwesomeProject/Frameworks/FBSDKCoreKit.framework; sourceTree = "<group>"; };
 		EBBF85221D26CF76002C031D /* FBSDKLoginKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKLoginKit.framework; path = AwesomeProject/Frameworks/FBSDKLoginKit.framework; sourceTree = "<group>"; };
 		EBBF85241D26CF80002C031D /* FBSDKShareKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKShareKit.framework; path = AwesomeProject/Frameworks/FBSDKShareKit.framework; sourceTree = "<group>"; };
@@ -237,6 +239,7 @@
 				359898BBEC964D5DA0AF7ED5 /* libRNVectorIcons.a in Frameworks */,
 				EBBF85201D26CEE6002C031D /* FBSDKCoreKit.framework in Frameworks */,
 				C8DE061CF7174B84A2E4A1AB /* libRNSpinkit.a in Frameworks */,
+				EB0CEA1B1D8B0BE20009BF35 /* Bolts.framework in Frameworks */,
 				AA375554DDF642E6A8DC3ED4 /* libAirMaps.a in Frameworks */,
 				644F25D7EA9E44179A5562D8 /* libRCTFBSDK.a in Frameworks */,
 			);
@@ -468,6 +471,7 @@
 		EBBF85211D26CF5E002C031D /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				EB0CEA1A1D8B0BE20009BF35 /* Bolts.framework */,
 				EBBF85241D26CF80002C031D /* FBSDKShareKit.framework */,
 				EBBF85221D26CF76002C031D /* FBSDKLoginKit.framework */,
 				EBBF851F1D26CEE6002C031D /* FBSDKCoreKit.framework */,
@@ -853,6 +857,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/AwesomeProject/Frameworks",
+					"$(PROJECT_DIR)",
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
@@ -884,6 +889,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/AwesomeProject/Frameworks",
+					"$(PROJECT_DIR)",
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
