@@ -47,7 +47,7 @@ class Tracker extends React.Component {
     }
   }
   goBack() {
-  console.log(this)
+  console.log(this);
   }
 
   render () {

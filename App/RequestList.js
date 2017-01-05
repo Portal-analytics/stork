@@ -35,7 +35,7 @@ class RequestList extends React.Component {
     //   sorter = 'orderByChild(venue)'
     // }
 
-    this.vendorsRef = firebase.database().ref('vendors/');
+    this.requestsRef = firebase.database().ref('requests/');
 
   }
 
@@ -45,22 +45,34 @@ class RequestList extends React.Component {
     return firebase.database().ref();
   }
 
-  listenForRequests(vendorsRef){
-    vendorsRef.on('value', (snap) => {
+  listenForRequests(requestsRef){
+    requestsRef.on('value', (snap) => {
       var recentRequests = [];
       snap.forEach((child) => {
-        recentRequests.push({
-          altLocation: child.val().altLocation,
-          complete: child.val().complete,
-          order: child.val().order,
-          status: child.val().status,
-          uid: child.val().uid,
-          venue: child.val().venue,
-          // change to vendor fields
-          // name
-          // # active checkins
-          // location?
-        });
+
+        if(recentRequests.length === 0){
+          recentRequests.push(child.val().venue);
+        }
+        if(recentRequests.indexOf(child.val().venue) > -1){
+            console.log('its there...somewhere');
+            console.log(recentRequests.indexOf(child.val().venue));
+          } else {
+            recentRequests.push(child.val().venue);
+            console.log('pushed it real good.')
+          }
+
+        // recentRequests.push({
+        //   altLocation: child.val().altLocation,
+        //   complete: child.val().complete,
+        //   order: child.val().order,
+        //   status: child.val().status,
+        //   uid: child.val().uid,
+        //   venue: child.val().venue,
+        //   // change to vendor fields
+        //   // name
+        //   // # active checkins
+        //   // location?
+        // });
       });
       this.setState({
         dataSource: this.state.dataSource.cloneWithRows(recentRequests)
@@ -69,7 +81,7 @@ class RequestList extends React.Component {
   }
 
   componentDidMount(){
-    this.listenForRequests(this.vendorsRef);
+    this.listenForRequests(this.requestsRef);
   }
 
   _renderSeperator(sectionID: number, rowID: number, adjacentRowHighlighted: bool){
@@ -86,11 +98,11 @@ class RequestList extends React.Component {
 
 
   getAvailableRequests(index){
-    var indexVenue = index.venue;
+    var selectedIndex = index;
     return(
       <View style={styles.spacer}>
-      <TouchableHighlight onPress={this.props.goToVenueRequests.bind(this)}>
-      <Text style={styles.menuItems}>{index.venue}</Text>
+      <TouchableHighlight onPress={this.props.goToVenueRequests.bind(this, selectedIndex)}>
+      <Text style={styles.menuItems}>{index}</Text>
       </TouchableHighlight>
       </View>
     )

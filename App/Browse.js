@@ -67,7 +67,7 @@ checkinsRef.on('value', (snap) => {
     });
 
     for(var i = 0; i < recentCheckins.length; i++){
-      if(recentCheckins[i].active == false){
+      if(recentCheckins[i].active === false){
         recentCheckins.splice(i, 1);
       }
     }

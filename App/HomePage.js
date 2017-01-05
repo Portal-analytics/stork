@@ -185,11 +185,11 @@ class Homepage extends React.Component {
 
   goToVenueRequests() {
     console.log(this.props);
-    console.log('props of homepage ' + this.props.placeSelected);
+    console.log('props of homepage ' + this.props.selectedIndex);
     this.props.navigator.push({
       id: 'VenueRequests',
       passProps:{
-        placeSelected: this.props.placeSelected,
+        selectedIndex: this.props.selectedIndex,
       }
     });
 
