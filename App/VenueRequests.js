@@ -84,8 +84,7 @@ class VenueRequests extends React.Component {
   }
 
   figureOutWhatTheFuckIsGoingOn() {
-    console.log('FUCK');
-    console.log(this.index);
+
     this.openOrderModal();
   }
 
@@ -110,7 +109,7 @@ class VenueRequests extends React.Component {
   }
 
   openOrderModal() {
-    console.log('youre a pussy')
+
     this.setState({
       orderModalVisible: true,
     });
@@ -157,7 +156,8 @@ class VenueRequests extends React.Component {
   }
 
   renderScene() {
-
+    console.log('from VR');
+    console.log(this.props);
     return(
       <View style={styles.container}>
 

@@ -184,12 +184,14 @@ class Homepage extends React.Component {
   }
 
   goToVenueRequests() {
-    console.log(this.props);
-    console.log('props of homepage ' + this.props.selectedIndex);
+
+    console.log('props of homepage ' + this.props);
+    //would need the props from RequestList to then pass to VenueRequests below.
     this.props.navigator.push({
       id: 'VenueRequests',
-      passProps:{
-        selectedIndex: this.props.selectedIndex,
+      passProps: {
+        selectedIndex: 'these show up in Venue Requests',
+        secretIngredient: 'titty sprinkles'
       }
     });
 

@@ -54,11 +54,10 @@ class RequestList extends React.Component {
           recentRequests.push(child.val().venue);
         }
         if(recentRequests.indexOf(child.val().venue) > -1){
-            console.log('its there...somewhere');
-            console.log(recentRequests.indexOf(child.val().venue));
+            //if it's there do nothing
           } else {
             recentRequests.push(child.val().venue);
-            console.log('pushed it real good.')
+            //if it's not, add it
           }
 
         // recentRequests.push({
@@ -85,6 +84,7 @@ class RequestList extends React.Component {
   }
 
   _renderSeperator(sectionID: number, rowID: number, adjacentRowHighlighted: bool){
+    console.log('rowID is ' + rowID);
     return(
       <View
       key={`${sectionID}-${rowID}`}
@@ -98,15 +98,18 @@ class RequestList extends React.Component {
 
 
   getAvailableRequests(index){
-    var selectedIndex = index;
+
     return(
       <View style={styles.spacer}>
-      <TouchableHighlight onPress={this.props.goToVenueRequests.bind(this, selectedIndex)}>
+      <TouchableHighlight onPress={this.props.goToVenueRequests.bind(this)}>
       <Text style={styles.menuItems}>{index}</Text>
       </TouchableHighlight>
       </View>
     )
+
   }
+
+
 
   openRequestModal(){
 
