@@ -14,6 +14,7 @@ import {
 } from 'react-native';
 import Icons from 'react-native-vector-icons';
 import ConfirmCheckIn from './ConfirmCheckIn';
+import {GooglePlacesAutocomplete} from 'react-native-google-places-autocomplete';
 
 class StorkCheckIn extends React.Component {
   constructor() {
@@ -78,6 +79,18 @@ class StorkCheckIn extends React.Component {
     });
   }
 
+  renderTextInput() {
+    return(
+      <TextInput
+      style={styles.inputText}
+      ref = 'destination'
+      placeholder= 'Bodos, CVS, Newcomb'
+      color = '#000000'
+      onChangeText={(destination) => this.setState({destination})}
+      value={this.state.destination}
+      />
+    )
+  }
 
   render() {
     var alt = (!this.state.isAtDestination)?
@@ -89,13 +102,46 @@ class StorkCheckIn extends React.Component {
       <View style={styles.or}>
       <Text style ={styles.checkInText}> Destination </Text>
       <View>
-      <TextInput
-      style={styles.inputText}
-      ref = 'destination'
-      placeholder= 'Bodos, CVS, Newcomb'
-      color = '#000000'
-      onChangeText={(destination) => this.setState({destination})}
-      value={this.state.destination}
+      <GooglePlacesAutocomplete
+        placeholder='Search'
+        minLength={2} // minimum length of text to search
+        autoFocus={false}
+        fetchDetails={true}
+        onPress={(data, details = null) => { // 'details' is provided when fetchDetails = true
+        console.log(data.terms[0].value);
+        this.setState({
+          destination: data.terms[0].value,
+        })
+          console.log('this is details');
+          console.log(details);
+          console.log('apparently working');
+        }}
+        getDefaultValue={() => {
+          return ''; // text input default value
+        }}
+        query={{
+          // available options: https://developers.google.com/places/web-service/autocomplete
+          key: 'AIzaSyASAkQcB8bk-tXpWbVCP4JPpn4r30oAtb8',
+          language: 'en', // language of the results
+          types: 'establishment', // default: 'geocode'
+        }}
+        styles={{
+          description: {
+            fontWeight: 'bold',
+          },
+          predefinedPlacesDescription: {
+            color: '#1faadb',
+          },
+        }}
+
+        currentLocation={false} // Will add a 'Current location' button at the top of the predefined places list
+
+        nearbyPlacesAPI='GooglePlacesSearch' // Which API to use: GoogleReverseGeocoding or GooglePlacesSearch
+        GooglePlacesSearchQuery={{
+          // available options for GooglePlacesSearch API : https://developers.google.com/places/web-service/search
+          rankby: 'distance',
+          types: 'food',
+        }}
       />
       </View>
       </View>

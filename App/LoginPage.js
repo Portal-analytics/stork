@@ -84,6 +84,7 @@ class LoginPage extends React.Component {
 
 
   render() {
+
     return (
       <View style={styles.container}>
         <Image source={require('../storklogo.jpg')} style={styles.logoImage}/>

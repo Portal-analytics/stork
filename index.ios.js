@@ -108,8 +108,8 @@ renderScene(route, nav) {
     if(routeID === 'VenueRequests') {
       return (
         <VenueRequests
-          navigator={nav}
           {...route.passProps}
+          navigator={nav}
            />
         )
     }
@@ -124,8 +124,8 @@ renderScene(route, nav) {
     if(routeID === 'RequestList') {
       return (
         <RequestList
-          navigator={nav}
           {...route.passProps}
+          navigator={nav}
           />
       );
     }

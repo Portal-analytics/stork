@@ -18,7 +18,7 @@ import HomePage from './HomePage';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Tabbar, { Tab, RawContent, IconWithBar, glypyMapMaker } from 'react-native-tabbar';
 import firebase from 'firebase';
-
+import {GooglePlacesAutocomplete} from 'react-native-google-places-autocomplete';
 
 class PlaceARequest extends React.Component {
   constructor(props) {
@@ -42,8 +42,8 @@ class PlaceARequest extends React.Component {
   onSubmit(){
    this.props.pushToSearchingForStork();
    this.props.closeOrderModal();
-    let venue = this.state.venue;
-    let order = this.state.order;
+  //  let venue = this.state.venue;
+  //  let order = this.state.order;
 
     var database = firebase.database();
     var requestsRef = database.ref('requests/')
@@ -62,7 +62,7 @@ class PlaceARequest extends React.Component {
   }
 
   dismissOrderKeyboard() {
-  
+
     dismissKeyboard();
   }
 
@@ -96,6 +96,68 @@ class PlaceARequest extends React.Component {
           } />
     );
   }
+  renderVenueInput() {
+    return(
+    <View style={styles.submit}>
+      <TextInput
+      style={styles.venueInput}
+      ref = 'venue'
+      placeholder= 'Venue e.g. Chipotle, CVS, Clark Hall'
+      color = '#000000'
+      onChangeText={(venue) => this.setState({venue})}
+      value={this.state.venue}
+      />
+      </View>
+    );
+  }
+
+  renderGooglePlaces(){
+    return(
+      <GooglePlacesAutocomplete
+        placeholder='Search'
+        minLength={2} // minimum length of text to search
+        autoFocus={false}
+        fetchDetails={true}
+        onPress={(data, details = null) => { // 'details' is provided when fetchDetails = true
+          console.log(data.terms[0].value);
+          this.setState({
+            venue: data.terms[0].value,
+          })
+
+          console.log(details);
+          console.log('definitely working');
+        }}
+        getDefaultValue={() => {
+          return ''; // text input default value
+        }}
+        query={{
+          // available options: https://developers.google.com/places/web-service/autocomplete
+          key: 'AIzaSyASAkQcB8bk-tXpWbVCP4JPpn4r30oAtb8',
+          language: 'en', // language of the results
+          types: 'establishment', // default: 'geocode'
+        }}
+        styles={{
+          description: {
+            fontWeight: 'bold',
+          },
+          predefinedPlacesDescription: {
+            color: '#1faadb',
+          },
+        }}
+
+        currentLocation={false} // Will add a 'Current location' button at the top of the predefined places list
+
+        nearbyPlacesAPI='GooglePlacesSearch' // Which API to use: GoogleReverseGeocoding or GooglePlacesSearch
+        GooglePlacesSearchQuery={{
+          // available options for GooglePlacesSearch API : https://developers.google.com/places/web-service/search
+          rankby: 'distance',
+          types: 'food',
+        }}
+      />
+    );
+
+  }
+
 
   renderScene() {
     var alt =  (this.state.altLocationIsVisible)?
@@ -103,15 +165,48 @@ class PlaceARequest extends React.Component {
 
     return (
       <View style={styles.container}>
-        <View style={styles.submit}>
-          <TextInput
-          style={styles.venueInput}
-          ref = 'venue'
-          placeholder= 'Venue e.g. Chipotle, CVS, Clark Hall'
-          color = '#000000'
-          onChangeText={(venue) => this.setState({venue})}
-          value={this.state.venue}
-          />
+        <View style={styles.places}>
+        <GooglePlacesAutocomplete
+          placeholder='Search'
+          minLength={2} // minimum length of text to search
+          autoFocus={false}
+          fetchDetails={true}
+          onPress={(data, details = null) => { // 'details' is provided when fetchDetails = true
+          console.log(data.terms[0].value);
+          this.setState({
+            venue: data.terms[0].value,
+          })
+            console.log(data);
+            console.log(details);
+            console.log('apparently working');
+          }}
+          getDefaultValue={() => {
+            return ''; // text input default value
+          }}
+          query={{
+            // available options: https://developers.google.com/places/web-service/autocomplete
+            key: 'AIzaSyASAkQcB8bk-tXpWbVCP4JPpn4r30oAtb8',
+            language: 'en', // language of the results
+            types: 'establishment', // default: 'geocode'
+          }}
+          styles={{
+            description: {
+              fontWeight: 'bold',
+            },
+            predefinedPlacesDescription: {
+              color: '#1faadb',
+            },
+          }}
+
+          currentLocation={false} // Will add a 'Current location' button at the top of the predefined places list
+
+          nearbyPlacesAPI='GooglePlacesSearch' // Which API to use: GoogleReverseGeocoding or GooglePlacesSearch
+          GooglePlacesSearchQuery={{
+            // available options for GooglePlacesSearch API : https://developers.google.com/places/web-service/search
+            rankby: 'distance',
+            types: 'food',
+          }}
+        />
         </View>
         <View style={{flexDirection: 'row'}}>
           <Text style={styles.welcome}> Deliver to current address: </Text>
@@ -177,6 +272,10 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginTop: 20,
     marginBottom: 20,
+  },
+  places:{
+    alignSelf: 'center',
+    width:280,
   },
   title: {
     fontSize: 30,

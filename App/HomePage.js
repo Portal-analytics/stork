@@ -59,7 +59,6 @@ class Homepage extends React.Component {
   };
   this.goToConfirmCheckIn=this.goToConfirmCheckIn.bind(this);
   this.goToConfirmCheckOut=this.goToConfirmCheckOut.bind(this);
-  this.goToVenueRequests=this.goToVenueRequests.bind(this);
   this.pushToSearchingForStork=this.pushToSearchingForStork.bind(this);
   this.closeOrderModal=this.closeOrderModal.bind(this);
   this.closeSettingsModal=this.closeSettingsModal.bind(this);
@@ -183,13 +182,16 @@ class Homepage extends React.Component {
     }
   }
 
-  goToVenueRequests() {
-    console.log(this.props);
-    console.log('props of homepage ' + this.props.placeSelected);
+  goToVenueRequests(index) {
+
+    console.log('props of homepage ' + this.props);
+    console.log('also index is ' + index);
+    //would need the props from RequestList to then pass to VenueRequests below.
     this.props.navigator.push({
       id: 'VenueRequests',
-      passProps:{
-        placeSelected: this.props.placeSelected,
+      passProps: {
+        selectedIndex: index,
+        secretIngredient: 'titty sprinkles'
       }
     });
 

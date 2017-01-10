@@ -28,6 +28,7 @@ class StorkCheckOut extends React.Component {
     //Have to do logic to check out user and take it off the map
     var checkOutRef = firebase.database().ref('checkins/');
     var check = this.props.checkinKey
+    console.log(this.props.checkinKey);
     firebase.database().ref('checkins/' + check).update({
         active: false,
       });
