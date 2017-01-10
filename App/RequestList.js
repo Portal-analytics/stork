@@ -84,7 +84,7 @@ class RequestList extends React.Component {
   }
 
   _renderSeperator(sectionID: number, rowID: number, adjacentRowHighlighted: bool){
-    console.log('rowID is ' + rowID);
+    
     return(
       <View
       key={`${sectionID}-${rowID}`}
@@ -101,7 +101,7 @@ class RequestList extends React.Component {
 
     return(
       <View style={styles.spacer}>
-      <TouchableHighlight onPress={this.props.goToVenueRequests.bind(this)}>
+      <TouchableHighlight onPress={this.props.goToVenueRequests.bind(this, index)}>
       <Text style={styles.menuItems}>{index}</Text>
       </TouchableHighlight>
       </View>

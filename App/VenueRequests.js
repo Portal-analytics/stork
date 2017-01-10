@@ -49,7 +49,7 @@ class VenueRequests extends React.Component {
     requestRef.on('value', (snap) => {
 
       snap.forEach((child) => {
-        if(child.val().venue.toLowerCase() === venue.toLowerCase()){
+        if(child.val().venue === this.props.selectedIndex){
           recentVenueRequests.push({
             altLocation: child.val().altLocation,
             complete: child.val().complete,
@@ -149,7 +149,7 @@ class VenueRequests extends React.Component {
                                 </TouchableOpacity>
                               </View>);},
                   Title: (route, navigator, index, navState) =>
-                    { return (<View><Text style={styles.title}>{this.state.title}</Text></View>);},
+                    { return (<View><Text style={styles.title}>{this.props.selectedIndex}</Text></View>);},
                 }} />
           } />
     );
